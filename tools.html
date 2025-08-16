@@ -14,7 +14,7 @@
       font-family: 'Tomorrow', sans-serif;
       height: 100vh;
       width: 100vw;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     nav {
@@ -37,8 +37,7 @@
       transition: all 0.3s ease;
     }
     nav a:hover {
-      color: white;
-      text-shadow: none;
+      color: #00ffcc;
     }
 
     #canvas {
@@ -48,23 +47,49 @@
       z-index: 0;
     }
 
-    .coming-soon {
+    .tools-container {
       position: relative;
       z-index: 10;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      margin-top: 120px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .tool-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 12px;
       text-align: center;
+      backdrop-filter: blur(6px);
     }
-    .coming-soon h1 {
-      font-size: 64px;
-      margin-bottom: 20px;
+    .tool-card h2 {
+      margin-bottom: 15px;
+      font-size: 22px;
+      color: #00ffcc;
     }
-    .coming-soon p {
-      font-size: 20px;
-      color: #ccc;
+    .tool-card input, .tool-card button {
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      margin: 5px 0;
+    }
+    .tool-card button {
+      background: #00ffcc;
+      color: black;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .tool-card pre {
+      text-align: left;
+      background: rgba(0,0,0,0.6);
+      padding: 10px;
+      border-radius: 8px;
+      overflow-x: auto;
+      max-height: 200px;
     }
   </style>
 </head>
@@ -80,17 +105,41 @@
 
   <canvas id="canvas"></canvas>
 
-  <div class="coming-soon">
-    <h1> Coming Soon </h1>
-    <p>Welcome to the Tools page.</p>
+  <div class="tools-container">
+
+    <div class="tool-card">
+      <h2>IP Lookup</h2>
+      <button onclick="getIP()">Get My IP</button>
+      <pre id="ip-result">Your IP info will appear here...</pre>
+    </div>
+
+    <div class="tool-card">
+      <h2>User Agent</h2>
+      <button onclick="getUA()">Show Info</button>
+      <pre id="ua-result">Your browser/OS info will appear here...</pre>
+    </div>
+
+    <div class="tool-card">
+      <h2>Ping Test</h2>
+      <input type="text" id="ping-host" placeholder="Enter host (example.com)">
+      <button onclick="pingTest()">Ping</button>
+      <pre id="ping-result">Results will appear here...</pre>
+    </div>
+
+    <div class="tool-card">
+      <h2>DNS Lookup</h2>
+      <input type="text" id="dns-host" placeholder="Enter domain">
+      <button onclick="dnsLookup()">Lookup</button>
+      <pre id="dns-result">DNS records will appear here...</pre>
+    </div>
   </div>
 
   <script>
+
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
     let mouse = { x: null, y: null };
-    let interactive = true;
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -102,10 +151,8 @@
     });
 
     window.addEventListener('mousemove', (e) => {
-      if (interactive) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      }
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     });
 
     class Particle {
@@ -145,25 +192,12 @@
             ctx.stroke();
           }
         }
-        if (mouse.x && mouse.y) {
-          let dx = particles[a].x - mouse.x;
-          let dy = particles[a].y - mouse.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-          }
-        }
       }
     }
 
     function init() {
       particles = [];
-      for (let i = 0; i < 150; i++) {
+      for (let i = 0; i < 120; i++) {
         let x = Math.random() * canvas.width;
         let y = Math.random() * canvas.height;
         particles.push(new Particle(x, y));
@@ -179,6 +213,41 @@
 
     init();
     animate();
+
+    async function getIP() {
+      const res = await fetch("https://ipapi.co/json/");
+      const data = await res.json();
+      document.getElementById("ip-result").textContent = JSON.stringify(data, null, 2);
+    }
+
+    function getUA() {
+      const info = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language
+      };
+      document.getElementById("ua-result").textContent = JSON.stringify(info, null, 2);
+    }
+
+    async function pingTest() {
+      const host = document.getElementById("ping-host").value || "https://example.com";
+      const start = performance.now();
+      try {
+        await fetch(host, { mode: "no-cors" });
+        const end = performance.now();
+        document.getElementById("ping-result").textContent = `Latency to ${host}: ${(end - start).toFixed(2)} ms`;
+      } catch {
+        document.getElementById("ping-result").textContent = `Failed to reach ${host}`;
+      }
+    }
+
+    async function dnsLookup() {
+      const host = document.getElementById("dns-host").value;
+      if (!host) return;
+      const res = await fetch(`https://dns.google/resolve?name=${host}`);
+      const data = await res.json();
+      document.getElementById("dns-result").textContent = JSON.stringify(data, null, 2);
+    }
   </script>
 
 </body>
