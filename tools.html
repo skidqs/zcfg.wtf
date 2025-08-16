@@ -37,7 +37,8 @@
       transition: all 0.3s ease;
     }
     nav a:hover {
-      color: #0ff;
+      color: white;
+      text-shadow: none;
     }
 
     #canvas {
@@ -50,69 +51,62 @@
     .tools-container {
       position: relative;
       z-index: 10;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 120px;
-      gap: 30px;
+      padding: 120px 20px 40px 20px;
+      text-align: center;
     }
 
-    h1 {
-      font-size: 64px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    p.subtitle {
-      font-size: 20px;
+    .subtitle {
+      font-size: 24px;
       color: #ccc;
-      text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: 40px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .tool-box {
       background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 12px;
-      backdrop-filter: blur(8px);
-      width: 300px;
+      padding: 20px;
       text-align: center;
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-    .tool-box:hover {
-      transform: translateY(-5px);
-      background: rgba(0, 255, 255, 0.1);
-    }
-    .tool-box h3 {
-      margin-bottom: 10px;
-      color: #0ff;
-    }
-    .tool-box p {
-      font-size: 16px;
-      color: #ccc;
-      margin-bottom: 15px;
-    }
-    .tool-box button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background: #0ff;
-      color: black;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
-    .tool-box button:hover {
-      background: #0aa;
-      color: white;
+      transition: transform 0.3s, background 0.3s;
     }
 
-    .tools-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
+    .tool-box:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .tool-box h3 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .tool-box p {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #aaa;
+    }
+
+    .tool-box button {
+      background: #1e90ff;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .tool-box button:hover {
+      background: #0d6efd;
     }
   </style>
 </head>
@@ -129,44 +123,43 @@
   <canvas id="canvas"></canvas>
 
   <div class="tools-container">
-    <h1>Tools</h1>
     <p class="subtitle">Select a tool below to get started</p>
 
     <div class="tools-grid">
       <div class="tool-box">
         <h3>IP Lookup</h3>
         <p>Check IP addresses, location, ISP and more.</p>
-        <button onclick="window.location.href='tools/ip.html'">Go to Tool</button>
+        <button onclick="window.location.href='https://zcfg.wtf/tools/iplookup'">Go to Tool</button>
       </div>
 
       <div class="tool-box">
         <h3>DNS Lookup</h3>
         <p>Resolve domain names to IP addresses and records.</p>
-        <button onclick="window.location.href='tools/dns.html'">Go to Tool</button>
+        <button onclick="window.location.href='https://zcfg.wtf/tools/dnslookup'">Go to Tool</button>
       </div>
 
       <div class="tool-box">
         <h3>WHOIS Lookup</h3>
         <p>Find domain registration and ownership information.</p>
-        <button onclick="window.location.href='tools/whois.html'">Go to Tool</button>
+        <button onclick="window.location.href='https://zcfg.wtf/tools/whoislookup'">Go to Tool</button>
       </div>
 
       <div class="tool-box">
         <h3>Base64 Encoder</h3>
         <p>Encode any text into Base64 format.</p>
-        <button onclick="window.location.href='tools/base64.html'">Go to Tool</button>
+        <button onclick="window.location.href='https://zcfg.wtf/tools/base64encoder'">Go to Tool</button>
       </div>
 
       <div class="tool-box">
         <h3>Base64 Decoder</h3>
         <p>Decode Base64 text back to normal text.</p>
-        <button onclick="window.location.href='tools/base64.html'">Go to Tool</button>
+        <button onclick="window.location.href='https://zcfg.wtf/tools/base64decoder'">Go to Tool</button>
       </div>
 
       <div class="tool-box">
         <h3>Text Utilities</h3>
         <p>Reverse text, convert to uppercase/lowercase, and more.</p>
-        <button onclick="window.location.href='tools/text.html'">Go to Tool</button>
+        <button onclick="window.location.href='https://zcfg.wtf/tools/textutils'">Go to Tool</button>
       </div>
     </div>
   </div>
