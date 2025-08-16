@@ -1,121 +1,137 @@
-<div class="tools-container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero Config - Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: white;
+      font-family: 'Tomorrow', sans-serif;
+      min-height: 100vh;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.5);
+      padding: 15px 0;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      z-index: 10;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    nav a:hover {
+      color: #0ff;
+    }
+    .container {
+      max-width: 800px;
+      margin: 100px auto 50px;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+    }
+    h2 {
+      color: #0ff;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      font-family: 'Tomorrow', sans-serif;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #0ff;
+      color: black;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #0aa;
+      color: white;
+    }
+    #result {
+      white-space: pre-wrap;
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
 
-  <div class="tool-card">
-    <h2>IP Lookup</h2>
-    <input type="text" id="ip-input" placeholder="Enter IP address">
-    <button onclick="lookupIP()">Lookup</button>
-    <pre id="ip-result">Results will appear here...</pre>
-  </div>
+<nav>
+  <a href="#">Home</a>
+  <a href="#">Tools</a>
+</nav>
 
-  <div class="tool-card">
-    <h2>DNS Lookup</h2>
-    <input type="text" id="dns-input" placeholder="Enter domain">
-    <button onclick="lookupDNS()">Lookup</button>
-    <pre id="dns-result">Results will appear here...</pre>
-  </div>
-
-  <div class="tool-card">
-    <h2>WHOIS Lookup</h2>
-    <input type="text" id="whois-input" placeholder="Enter domain">
-    <button onclick="lookupWHOIS()">Lookup</button>
-    <pre id="whois-result">Results will appear here...</pre>
-  </div>
-
-  <div class="tool-card">
-    <h2>Base64 Encoder / Decoder</h2>
-    <textarea id="b64-input" placeholder="Enter text here"></textarea><br>
+<div class="container">
+  <h2>Base64 Encoder / Decoder</h2>
+  <textarea id="b64-input" placeholder="Enter text here..."></textarea>
+  <div>
     <button onclick="encodeBase64()">Encode</button>
     <button onclick="decodeBase64()">Decode</button>
-    <pre id="b64-result">Result will appear here...</pre>
   </div>
+  <div id="result"></div>
+</div>
+
+<div class="container">
+  <h2>Text Tools</h2>
+  <textarea id="text-input" placeholder="Enter text here..."></textarea>
+  <div>
+    <button onclick="toUpper()">Uppercase</button>
+    <button onclick="toLower()">Lowercase</button>
+    <button onclick="reverseText()">Reverse</button>
+  </div>
+  <div id="text-result"></div>
 </div>
 
 <script>
 
-async function lookupIP() {
-  const ip = document.getElementById("ip-input").value;
-  if (!ip) return alert("Enter an IP!");
-  try {
-    const res = await fetch(`https://ipapi.co/${ip}/json/`);
-    const data = await res.json();
-    document.getElementById("ip-result").textContent = JSON.stringify(data, null, 2);
-  } catch (e) {
-    document.getElementById("ip-result").textContent = "Error fetching data.";
+  function encodeBase64() {
+    const text = document.getElementById("b64-input").value;
+    document.getElementById("result").textContent = btoa(text);
   }
-}
-
-async function lookupDNS() {
-  const domain = document.getElementById("dns-input").value;
-  if (!domain) return alert("Enter a domain!");
-  try {
-    const res = await fetch(`https://dns.google/resolve?name=${domain}`);
-    const data = await res.json();
-    document.getElementById("dns-result").textContent = JSON.stringify(data, null, 2);
-  } catch (e) {
-    document.getElementById("dns-result").textContent = "Error fetching data.";
+  function decodeBase64() {
+    const text = document.getElementById("b64-input").value;
+    try {
+      document.getElementById("result").textContent = atob(text);
+    } catch(e) {
+      document.getElementById("result").textContent = "Invalid Base64 input!";
+    }
   }
-}
 
-async function lookupWHOIS() {
-  const domain = document.getElementById("whois-input").value;
-  if (!domain) return alert("Enter a domain!");
-  try {
-    const res = await fetch(`https://api.jsonwhoisapi.com/v1/whois?identifier=${domain}&apiKey=YOUR_API_KEY`);
-    const data = await res.json();
-    document.getElementById("whois-result").textContent = JSON.stringify(data, null, 2);
-  } catch (e) {
-    document.getElementById("whois-result").textContent = "Error fetching data.";
+  function toUpper() {
+    const text = document.getElementById("text-input").value;
+    document.getElementById("text-result").textContent = text.toUpperCase();
   }
-}
-
-function encodeBase64() {
-  const text = document.getElementById("b64-input").value;
-  document.getElementById("b64-result").textContent = btoa(text);
-}
-
-function decodeBase64() {
-  const text = document.getElementById("b64-input").value;
-  try {
-    document.getElementById("b64-result").textContent = atob(text);
-  } catch (e) {
-    document.getElementById("b64-result").textContent = "Invalid Base64 input!";
+  function toLower() {
+    const text = document.getElementById("text-input").value;
+    document.getElementById("text-result").textContent = text.toLowerCase();
   }
-}
+  function reverseText() {
+    const text = document.getElementById("text-input").value;
+    document.getElementById("text-result").textContent = text.split("").reverse().join("");
+  }
 </script>
 
-<style>
-.tools-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 100px 20px 20px;
-}
-.tool-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 20px;
-  backdrop-filter: blur(6px);
-}
-.tool-card input, .tool-card textarea {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-}
-.tool-card button {
-  margin-right: 5px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background: white;
-  color: black;
-}
-pre {
-  background: rgba(0,0,0,0.3);
-  padding: 10px;
-  border-radius: 6px;
-  overflow-x: auto;
-}
-</style>
+</body>
+</html>
