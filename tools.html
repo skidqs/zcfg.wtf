@@ -12,126 +12,260 @@
       background: black;
       color: white;
       font-family: 'Tomorrow', sans-serif;
-      min-height: 100vh;
+      height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
     }
+
     nav {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.4);
       padding: 15px 0;
       display: flex;
       justify-content: center;
       gap: 40px;
-      z-index: 10;
+      z-index: 20;
+      backdrop-filter: blur(6px);
     }
     nav a {
       color: white;
       text-decoration: none;
       font-size: 18px;
+      transition: all 0.3s ease;
     }
     nav a:hover {
       color: #0ff;
     }
-    .container {
-      max-width: 800px;
-      margin: 100px auto 50px;
+
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .tools-container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 120px;
+      gap: 30px;
+    }
+
+    h1 {
+      font-size: 64px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    p.subtitle {
+      font-size: 20px;
+      color: #ccc;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .tool-box {
+      background: rgba(255, 255, 255, 0.05);
       padding: 20px;
-      background: rgba(255,255,255,0.05);
       border-radius: 12px;
       backdrop-filter: blur(8px);
+      width: 300px;
+      text-align: center;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
-    h2 {
+    .tool-box:hover {
+      transform: translateY(-5px);
+      background: rgba(0, 255, 255, 0.1);
+    }
+    .tool-box h3 {
+      margin-bottom: 10px;
       color: #0ff;
     }
-    textarea, input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: none;
-      font-family: 'Tomorrow', sans-serif;
+    .tool-box p {
       font-size: 16px;
+      color: #ccc;
+      margin-bottom: 15px;
     }
-    button {
+    .tool-box button {
       padding: 10px 20px;
-      margin: 5px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       background: #0ff;
       color: black;
       font-weight: bold;
+      transition: all 0.3s ease;
     }
-    button:hover {
+    .tool-box button:hover {
       background: #0aa;
       color: white;
     }
-    #result {
-      white-space: pre-wrap;
-      background: rgba(255,255,255,0.1);
-      padding: 10px;
-      border-radius: 6px;
+
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="#">Home</a>
-  <a href="#">Tools</a>
-</nav>
+  <nav>
+    <a href="index">Home</a>
+    <a href="pastes">Pastes</a>
+    <a href="tools">Tools</a>
+    <a href="team">Team</a>
+    <a href="hoa">HOA</a>
+  </nav>
 
-<div class="container">
-  <h2>Base64 Encoder / Decoder</h2>
-  <textarea id="b64-input" placeholder="Enter text here..."></textarea>
-  <div>
-    <button onclick="encodeBase64()">Encode</button>
-    <button onclick="decodeBase64()">Decode</button>
+  <canvas id="canvas"></canvas>
+
+  <div class="tools-container">
+    <h1>Tools</h1>
+    <p class="subtitle">Select a tool below to get started</p>
+
+    <div class="tools-grid">
+      <div class="tool-box">
+        <h3>IP Lookup</h3>
+        <p>Check IP addresses, location, ISP and more.</p>
+        <button onclick="window.location.href='tools/ip.html'">Go to Tool</button>
+      </div>
+
+      <div class="tool-box">
+        <h3>DNS Lookup</h3>
+        <p>Resolve domain names to IP addresses and records.</p>
+        <button onclick="window.location.href='tools/dns.html'">Go to Tool</button>
+      </div>
+
+      <div class="tool-box">
+        <h3>WHOIS Lookup</h3>
+        <p>Find domain registration and ownership information.</p>
+        <button onclick="window.location.href='tools/whois.html'">Go to Tool</button>
+      </div>
+
+      <div class="tool-box">
+        <h3>Base64 Encoder</h3>
+        <p>Encode any text into Base64 format.</p>
+        <button onclick="window.location.href='tools/base64.html'">Go to Tool</button>
+      </div>
+
+      <div class="tool-box">
+        <h3>Base64 Decoder</h3>
+        <p>Decode Base64 text back to normal text.</p>
+        <button onclick="window.location.href='tools/base64.html'">Go to Tool</button>
+      </div>
+
+      <div class="tool-box">
+        <h3>Text Utilities</h3>
+        <p>Reverse text, convert to uppercase/lowercase, and more.</p>
+        <button onclick="window.location.href='tools/text.html'">Go to Tool</button>
+      </div>
+    </div>
   </div>
-  <div id="result"></div>
-</div>
 
-<div class="container">
-  <h2>Text Tools</h2>
-  <textarea id="text-input" placeholder="Enter text here..."></textarea>
-  <div>
-    <button onclick="toUpper()">Uppercase</button>
-    <button onclick="toLower()">Lowercase</button>
-    <button onclick="reverseText()">Reverse</button>
-  </div>
-  <div id="text-result"></div>
-</div>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+    let interactive = true;
 
-<script>
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-  function encodeBase64() {
-    const text = document.getElementById("b64-input").value;
-    document.getElementById("result").textContent = btoa(text);
-  }
-  function decodeBase64() {
-    const text = document.getElementById("b64-input").value;
-    try {
-      document.getElementById("result").textContent = atob(text);
-    } catch(e) {
-      document.getElementById("result").textContent = "Invalid Base64 input!";
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (interactive) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      }
+    });
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 1.2;
+        this.vy = (Math.random() - 0.5) * 1.2;
+        this.size = 2;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+      }
     }
-  }
 
-  function toUpper() {
-    const text = document.getElementById("text-input").value;
-    document.getElementById("text-result").textContent = text.toUpperCase();
-  }
-  function toLower() {
-    const text = document.getElementById("text-input").value;
-    document.getElementById("text-result").textContent = text.toLowerCase();
-  }
-  function reverseText() {
-    const text = document.getElementById("text-input").value;
-    document.getElementById("text-result").textContent = text.split("").reverse().join("");
-  }
-</script>
+    function connectParticles() {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 150) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+        if (mouse.x && mouse.y) {
+          let dx = particles[a].x - mouse.x;
+          let dy = particles[a].y - mouse.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 150) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function init() {
+      particles = [];
+      for (let i = 0; i < 150; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        particles.push(new Particle(x, y));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+  </script>
 
 </body>
 </html>
