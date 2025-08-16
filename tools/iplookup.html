@@ -33,6 +33,9 @@ nav a {
   text-decoration: none;
   font-size: 18px;
 }
+nav a:hover {
+  color: #1e90ff;
+}
 
 #canvas {
   position: fixed;
@@ -84,36 +87,14 @@ h1 {
   background: #0d6efd;
 }
 
-.results {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-
 .result-box {
   background: rgba(255,255,255,0.05);
   border-radius: 12px;
   padding: 20px;
   border: 1px solid rgba(255,255,255,0.2);
-}
-
-.result-box h3 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #1e90ff;
-}
-
-.result-box p {
+  white-space: pre-line;
   font-size: 14px;
-  color: #ccc;
-  word-break: break-word;
-}
-
-footer {
-  text-align: center;
-  margin-top: 60px;
-  color: #888;
-  font-size: 14px;
+  line-height: 1.6;
 }
 </style>
 </head>
@@ -121,8 +102,10 @@ footer {
 
 <nav>
   <a href="/index">Home</a>
+  <a href="/pastes">Pastes</a>
   <a href="/tools">Tools</a>
   <a href="/team">Team</a>
+  <a href="/hoa">HOA</a>
 </nav>
 
 <canvas id="canvas"></canvas>
@@ -133,12 +116,10 @@ footer {
     <input type="text" id="ipInput" placeholder="Enter IP address or domain">
     <button onclick="lookupIP()">Lookup</button>
   </div>
-  <div class="results" id="results">
+  <div id="results">
 
   </div>
 </div>
-
-<footer>&copy; Zero Config Tools</footer>
 
 <script>
 
@@ -234,34 +215,32 @@ async function lookupIP(){
   if(!ip) return alert('Please enter an IP address or domain.');
   
   const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = '<p style="color:#ccc;">Loading...</p>';
+  resultsDiv.innerHTML = 'Loading...';
 
   try {
     const response = await fetch(`https://ipapi.co/${ip}/json/`);
     const data = await response.json();
 
-    const fields = {
-      'IP': data.ip,
-      'Hostname': data.hostname || 'N/A',
-      'City': data.city || 'N/A',
-      'Region': data.region || 'N/A',
-      'Country': data.country_name || 'N/A',
-      'ISP': data.org || 'N/A',
-      'Latitude': data.latitude || 'N/A',
-      'Longitude': data.longitude || 'N/A',
-      'Timezone': data.timezone || 'N/A'
-    };
+    let text = `
+IP: ${data.ip || 'N/A'}
+Hostname: ${data.hostname || 'N/A'}
+City: ${data.city || 'N/A'}
+Region: ${data.region || 'N/A'}
+Country: ${data.country_name || 'N/A'}
+ISP: ${data.org || 'N/A'}
+Latitude: ${data.latitude || 'N/A'}
+Longitude: ${data.longitude || 'N/A'}
+Timezone: ${data.timezone || 'N/A'}
+    `;
 
     resultsDiv.innerHTML = '';
-    for(const [key,value] of Object.entries(fields)){
-      const box = document.createElement('div');
-      box.className = 'result-box';
-      box.innerHTML = `<h3>${key}</h3><p>${value}</p>`;
-      resultsDiv.appendChild(box);
-    }
+    const box = document.createElement('div');
+    box.className = 'result-box';
+    box.textContent = text;
+    resultsDiv.appendChild(box);
 
   } catch(err){
-    resultsDiv.innerHTML = '<p style="color:red;">Error fetching IP information.</p>';
+    resultsDiv.innerHTML = 'Error fetching IP information.';
     console.error(err);
   }
 }
