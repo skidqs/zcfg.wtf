@@ -1,254 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zero Config - Tools</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      color: white;
-      font-family: 'Tomorrow', sans-serif;
-      height: 100vh;
-      width: 100vw;
-      overflow-x: hidden;
-    }
+<div class="tools-container">
 
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 15px 0;
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      z-index: 20;
-      backdrop-filter: blur(6px);
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
-      transition: all 0.3s ease;
-    }
-    nav a:hover {
-      color: #00ffcc;
-    }
-
-    #canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-
-    .tools-container {
-      position: relative;
-      z-index: 10;
-      margin-top: 120px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .tool-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      backdrop-filter: blur(6px);
-    }
-    .tool-card h2 {
-      margin-bottom: 15px;
-      font-size: 22px;
-      color: #00ffcc;
-    }
-    .tool-card input, .tool-card button {
-      padding: 8px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      margin: 5px 0;
-    }
-    .tool-card button {
-      background: #00ffcc;
-      color: black;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .tool-card pre {
-      text-align: left;
-      background: rgba(0,0,0,0.6);
-      padding: 10px;
-      border-radius: 8px;
-      overflow-x: auto;
-      max-height: 200px;
-    }
-  </style>
-</head>
-<body>
-
-  <nav>
-    <a href="index">Home</a>
-    <a href="pastes">Pastes</a>
-    <a href="tools">Tools</a>
-    <a href="team">Team</a>
-    <a href="hoa">HOA</a>
-  </nav>
-
-  <canvas id="canvas"></canvas>
-
-  <div class="tools-container">
-
-    <div class="tool-card">
-      <h2>IP Lookup</h2>
-      <button onclick="getIP()">Get My IP</button>
-      <pre id="ip-result">Your IP info will appear here...</pre>
-    </div>
-
-    <div class="tool-card">
-      <h2>User Agent</h2>
-      <button onclick="getUA()">Show Info</button>
-      <pre id="ua-result">Your browser/OS info will appear here...</pre>
-    </div>
-
-    <div class="tool-card">
-      <h2>Ping Test</h2>
-      <input type="text" id="ping-host" placeholder="Enter host (example.com)">
-      <button onclick="pingTest()">Ping</button>
-      <pre id="ping-result">Results will appear here...</pre>
-    </div>
-
-    <div class="tool-card">
-      <h2>DNS Lookup</h2>
-      <input type="text" id="dns-host" placeholder="Enter domain">
-      <button onclick="dnsLookup()">Lookup</button>
-      <pre id="dns-result">DNS records will appear here...</pre>
-    </div>
+  <div class="tool-card">
+    <h2>IP Lookup</h2>
+    <input type="text" id="ip-input" placeholder="Enter IP address">
+    <button onclick="lookupIP()">Lookup</button>
+    <pre id="ip-result">Results will appear here...</pre>
   </div>
 
-  <script>
+  <div class="tool-card">
+    <h2>DNS Lookup</h2>
+    <input type="text" id="dns-input" placeholder="Enter domain">
+    <button onclick="lookupDNS()">Lookup</button>
+    <pre id="dns-result">Results will appear here...</pre>
+  </div>
 
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouse = { x: null, y: null };
+  <div class="tool-card">
+    <h2>WHOIS Lookup</h2>
+    <input type="text" id="whois-input" placeholder="Enter domain">
+    <button onclick="lookupWHOIS()">Lookup</button>
+    <pre id="whois-result">Results will appear here...</pre>
+  </div>
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  <div class="tool-card">
+    <h2>Base64 Encoder / Decoder</h2>
+    <textarea id="b64-input" placeholder="Enter text here"></textarea><br>
+    <button onclick="encodeBase64()">Encode</button>
+    <button onclick="decodeBase64()">Decode</button>
+    <pre id="b64-result">Result will appear here...</pre>
+  </div>
+</div>
 
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      init();
-    });
+<script>
 
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
+async function lookupIP() {
+  const ip = document.getElementById("ip-input").value;
+  if (!ip) return alert("Enter an IP!");
+  try {
+    const res = await fetch(`https://ipapi.co/${ip}/json/`);
+    const data = await res.json();
+    document.getElementById("ip-result").textContent = JSON.stringify(data, null, 2);
+  } catch (e) {
+    document.getElementById("ip-result").textContent = "Error fetching data.";
+  }
+}
 
-    class Particle {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.vx = (Math.random() - 0.5) * 1.2;
-        this.vy = (Math.random() - 0.5) * 1.2;
-        this.size = 2;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
-    }
+async function lookupDNS() {
+  const domain = document.getElementById("dns-input").value;
+  if (!domain) return alert("Enter a domain!");
+  try {
+    const res = await fetch(`https://dns.google/resolve?name=${domain}`);
+    const data = await res.json();
+    document.getElementById("dns-result").textContent = JSON.stringify(data, null, 2);
+  } catch (e) {
+    document.getElementById("dns-result").textContent = "Error fetching data.";
+  }
+}
 
-    function connectParticles() {
-      for (let a = 0; a < particles.length; a++) {
-        for (let b = a + 1; b < particles.length; b++) {
-          let dx = particles[a].x - particles[b].x;
-          let dy = particles[a].y - particles[b].y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(particles[b].x, particles[b].y);
-            ctx.stroke();
-          }
-        }
-      }
-    }
+async function lookupWHOIS() {
+  const domain = document.getElementById("whois-input").value;
+  if (!domain) return alert("Enter a domain!");
+  try {
+    const res = await fetch(`https://api.jsonwhoisapi.com/v1/whois?identifier=${domain}&apiKey=YOUR_API_KEY`);
+    const data = await res.json();
+    document.getElementById("whois-result").textContent = JSON.stringify(data, null, 2);
+  } catch (e) {
+    document.getElementById("whois-result").textContent = "Error fetching data.";
+  }
+}
 
-    function init() {
-      particles = [];
-      for (let i = 0; i < 120; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        particles.push(new Particle(x, y));
-      }
-    }
+function encodeBase64() {
+  const text = document.getElementById("b64-input").value;
+  document.getElementById("b64-result").textContent = btoa(text);
+}
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => { p.update(); p.draw(); });
-      connectParticles();
-      requestAnimationFrame(animate);
-    }
+function decodeBase64() {
+  const text = document.getElementById("b64-input").value;
+  try {
+    document.getElementById("b64-result").textContent = atob(text);
+  } catch (e) {
+    document.getElementById("b64-result").textContent = "Invalid Base64 input!";
+  }
+}
+</script>
 
-    init();
-    animate();
-
-    async function getIP() {
-      const res = await fetch("https://ipapi.co/json/");
-      const data = await res.json();
-      document.getElementById("ip-result").textContent = JSON.stringify(data, null, 2);
-    }
-
-    function getUA() {
-      const info = {
-        userAgent: navigator.userAgent,
-        platform: navigator.platform,
-        language: navigator.language
-      };
-      document.getElementById("ua-result").textContent = JSON.stringify(info, null, 2);
-    }
-
-    async function pingTest() {
-      const host = document.getElementById("ping-host").value || "https://example.com";
-      const start = performance.now();
-      try {
-        await fetch(host, { mode: "no-cors" });
-        const end = performance.now();
-        document.getElementById("ping-result").textContent = `Latency to ${host}: ${(end - start).toFixed(2)} ms`;
-      } catch {
-        document.getElementById("ping-result").textContent = `Failed to reach ${host}`;
-      }
-    }
-
-    async function dnsLookup() {
-      const host = document.getElementById("dns-host").value;
-      if (!host) return;
-      const res = await fetch(`https://dns.google/resolve?name=${host}`);
-      const data = await res.json();
-      document.getElementById("dns-result").textContent = JSON.stringify(data, null, 2);
-    }
-  </script>
-
-</body>
-</html>
+<style>
+.tools-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 100px 20px 20px;
+}
+.tool-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+.tool-card input, .tool-card textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+.tool-card button {
+  margin-right: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: white;
+  color: black;
+}
+pre {
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+</style>
