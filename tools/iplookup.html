@@ -52,11 +52,6 @@ nav a:hover {
   margin: 0 auto;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
 .lookup-box {
   display: flex;
   justify-content: center;
@@ -78,13 +73,13 @@ h1 {
   font-size: 16px;
   border-radius: 6px;
   border: none;
-  background: #1e90ff;
+  background: grey;
   color: white;
   cursor: pointer;
 }
 
 .lookup-box button:hover {
-  background: #0d6efd;
+  background: #555;
 }
 
 .result-box {
@@ -111,7 +106,6 @@ h1 {
 <canvas id="canvas"></canvas>
 
 <div class="container">
-  <h1>IP Lookup</h1>
   <div class="lookup-box">
     <input type="text" id="ipInput" placeholder="Enter IP address or domain">
     <button onclick="lookupIP()">Lookup</button>
