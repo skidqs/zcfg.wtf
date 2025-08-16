@@ -6,26 +6,31 @@
   <title>Zero Config</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-black text-white">
+<body class="text-white">
 
-  <nav class="bg-black border-b border-gray-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16 items-center">
+  <div class="relative h-screen bg-cover bg-center" style="background-image: url('background.png');">
 
-        <div class="flex-shrink-0">
-          <a href="#" class="text-lg font-bold">Zero Config</a>
+    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+
+    <nav class="absolute top-0 left-0 w-full z-10 border-b border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center relative">
+
+          <div class="flex-shrink-0 z-20">
+            <a href="#" class="text-lg font-bold">Zero Config</a>
+          </div>
+
+          <div class="absolute left-1/2 transform -translate-x-1/2 flex space-x-6 z-20">
+            <a href="#" class="text-white font-semibold hover:text-gray-300">Home</a>
+            <a href="#" class="text-gray-300 hover:text-white">Pastes</a>
+            <a href="#" class="text-gray-300 hover:text-white">Tools</a>
+            <a href="#" class="text-gray-300 hover:text-white">Team</a>
+          </div>
+
         </div>
-
-        <div class="hidden md:flex space-x-6">
-          <a href="#" class="text-white font-semibold hover:text-gray-300">Home</a>
-          <a href="#" class="text-gray-400 hover:text-white">Pastes</a>
-          <a href="#" class="text-gray-400 hover:text-white">Tools</a>
-          <a href="#" class="text-gray-400 hover:text-white">Team</a>
-        </div>
-
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 
 </body>
 </html>
