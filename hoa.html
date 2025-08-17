@@ -37,6 +37,7 @@
       transition: all 0.3s ease;
     }
     nav a:hover {
+      color: white;
       text-shadow: 0 0 10px white;
     }
 
@@ -47,41 +48,44 @@
       z-index: 0;
     }
 
-    .hoa-grid {
+    .hoa-container {
       position: relative;
       z-index: 10;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 100px 50px 50px 50px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      padding: 150px 50px 50px 50px;
+      justify-items: center;
+      align-items: center;
     }
 
-    .hoa-member {
+    .person {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 20px;
+      border: 2px solid white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 300px;
       text-align: center;
-      cursor: pointer;
-      transition: transform 0.3s, background 0.3s;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
-    .hoa-member:hover {
+    .person:hover {
+      background: rgba(255, 255, 255, 0.15);
       transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.1);
     }
-    .hoa-member img {
-      width: 80px;
-      height: 80px;
+    .person img {
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
-    .hoa-member h3 {
-      margin: 5px 0;
-      font-size: 20px;
+    .person h3 {
+      margin: 10px 0 5px 0;
+      font-size: 24px;
     }
-    .hoa-member p {
-      font-size: 14px;
+    .person p {
+      font-size: 16px;
       color: #ccc;
     }
   </style>
@@ -97,53 +101,53 @@
   </nav>
 
   <canvas id="canvas"></canvas>
-  
-  <div class="hoa-grid">
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 1">
-      <h3>Member 1</h3>
-      <p>Short description about member 1.</p>
-    </div>
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 2">
-      <h3>Member 2</h3>
-      <p>Short description about member 2.</p>
-    </div>
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 3">
-      <h3>Member 3</h3>
-      <p>Short description about member 3.</p>
-    </div>
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 4">
-      <h3>Member 4</h3>
-      <p>Short description about member 4.</p>
-    </div>
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 5">
-      <h3>Member 5</h3>
-      <p>Short description about member 5.</p>
-    </div>
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 6">
-      <h3>Member 6</h3>
-      <p>Short description about member 6.</p>
-    </div>
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 7">
-      <h3>Member 7</h3>
-      <p>Short description about member 7.</p>
-    </div>
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 8">
-      <h3>Member 8</h3>
-      <p>Short description about member 8.</p>
-    </div>
-    <div class="hoa-member" onclick="location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/80" alt="Member 9">
-      <h3>Member 9</h3>
-      <p>Short description about member 9.</p>
-    </div>
+
+  <div class="hoa-container">
+    <a href="hoa-pastes/1" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 1">
+      <h3>Person 1</h3>
+      <p>Description for Person 1</p>
+    </a>
+    <a href="hoa-pastes/2" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 2">
+      <h3>Person 2</h3>
+      <p>Description for Person 2</p>
+    </a>
+    <a href="hoa-pastes/3" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 3">
+      <h3>Person 3</h3>
+      <p>Description for Person 3</p>
+    </a>
+    <a href="hoa-pastes/4" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 4">
+      <h3>Person 4</h3>
+      <p>Description for Person 4</p>
+    </a>
+    <a href="hoa-pastes/5" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 5">
+      <h3>Person 5</h3>
+      <p>Description for Person 5</p>
+    </a>
+    <a href="hoa-pastes/6" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 6">
+      <h3>Person 6</h3>
+      <p>Description for Person 6</p>
+    </a>
+    <a href="hoa-pastes/7" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 7">
+      <h3>Person 7</h3>
+      <p>Description for Person 7</p>
+    </a>
+    <a href="hoa-pastes/8" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 8">
+      <h3>Person 8</h3>
+      <p>Description for Person 8</p>
+    </a>
+    <a href="hoa-pastes/9" class="person">
+      <img src="https://via.placeholder.com/150" alt="Person 9">
+      <h3>Person 9</h3>
+      <p>Description for Person 9</p>
+    </a>
   </div>
 
   <script>
@@ -158,7 +162,7 @@
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      initParticles();
+      init();
     });
 
     window.addEventListener('mousemove', (e) => {
@@ -219,10 +223,12 @@
       }
     }
 
-    function initParticles() {
+    function init() {
       particles = [];
       for (let i = 0; i < 150; i++) {
-        particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        particles.push(new Particle(x, y));
       }
     }
 
@@ -233,7 +239,7 @@
       requestAnimationFrame(animate);
     }
 
-    initParticles();
+    init();
     animate();
   </script>
 
