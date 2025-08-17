@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zero Config - Tools</title>
+  <title>Zero Config - Coming Soon</title>
   <link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
   <style>
     body {
@@ -12,8 +12,9 @@
       background: black;
       color: white;
       font-family: 'Tomorrow', sans-serif;
-      text-align: center;
-      min-height: 100vh;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
     }
 
     nav {
@@ -33,93 +34,149 @@
       color: white;
       text-decoration: none;
       font-size: 18px;
+      transition: all 0.3s ease;
+    }
+    nav a:hover {
+      color: white;
+      text-shadow: none;
     }
 
-    .container {
-      padding: 120px 20px 40px 20px;
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
 
-    h1 {
+    .coming-soon {
+      position: relative;
+      z-index: 10;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .coming-soon h1 {
+      font-size: 64px;
       margin-bottom: 20px;
     }
-
-    input[type="text"] {
-      padding: 10px;
-      width: 300px;
-      border-radius: 6px;
-      border: none;
-      margin-right: 10px;
-    }
-
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      background: #444;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background: #666;
-    }
-
-    pre {
-      text-align: left;
-      margin: 20px auto;
-      padding: 20px;
-      width: 90%;
-      max-width: 600px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      overflow-x: auto;
+    .coming-soon p {
+      font-size: 20px;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
+
   <nav>
     <a href="index">Home</a>
+    <a href="pastes">Pastes</a>
     <a href="tools">Tools</a>
+    <a href="team">Team</a>
+    <a href="hoa">Autism</a>
   </nav>
 
-  <div class="container">
-    <h1>DNS Lookup</h1>
-    <p>Retrieve DNS records for a domain</p>
-    <input type="text" id="domain" placeholder="Enter domain e.g. example.com">
-    <button onclick="lookupDNS()">Lookup</button>
+  <canvas id="canvas"></canvas>
 
-    <pre id="results"></pre>
+  <div class="coming-soon">
+    <h1>Coming Soon</h1>
+    <p>Welcome to our upcoming page!</p>
   </div>
 
   <script>
-    async function lookupDNS() {
-      const domain = document.getElementById('domain').value.trim();
-      const resultsEl = document.getElementById('results');
-      resultsEl.textContent = "Fetching DNS records...";
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
 
-      if (!domain) {
-        resultsEl.textContent = "Please enter a valid domain.";
-        return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 1.2;
+        this.vy = (Math.random() - 0.5) * 1.2;
+        this.size = 2;
       }
-
-      try {
-        const response = await fetch(`https://dns.google/resolve?name=${domain}`);
-        const data = await response.json();
-
-        if (data.Answer) {
-          let output = "";
-          data.Answer.forEach(record => {
-            output += `${record.name} - Type: ${record.type}, TTL: ${record.TTL}, Data: ${record.data}\n`;
-          });
-          resultsEl.textContent = output;
-        } else {
-          resultsEl.textContent = "No DNS records found.";
-        }
-      } catch (error) {
-        resultsEl.textContent = "Error fetching DNS records: " + error;
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
       }
     }
+
+    function connectParticles() {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 150) {
+            ctx.strokeStyle = `rgba(255,255,255,${1 - distance / 150})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+        if (mouse.x && mouse.y) {
+          let dx = particles[a].x - mouse.x;
+          let dy = particles[a].y - mouse.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 150) {
+            ctx.strokeStyle = `rgba(255,255,255,${1 - distance / 150})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function init() {
+      particles = [];
+      for (let i = 0; i < 150; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        particles.push(new Particle(x, y));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
   </script>
+
 </body>
 </html>
