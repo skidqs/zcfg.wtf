@@ -12,6 +12,8 @@
       background: black;
       color: white;
       font-family: 'Tomorrow', sans-serif;
+      height: 100vh;
+      width: 100vw;
       overflow-x: hidden;
     }
 
@@ -32,6 +34,10 @@
       color: white;
       text-decoration: none;
       font-size: 18px;
+      transition: all 0.3s ease;
+    }
+    nav a:hover {
+      text-shadow: 0 0 10px white;
     }
 
     #canvas {
@@ -41,48 +47,42 @@
       z-index: 0;
     }
 
-    .hoa-container {
+    .hoa-grid {
       position: relative;
       z-index: 10;
-      padding: 120px 20px 40px;
-      max-width: 1200px;
-      margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
+      gap: 20px;
+      padding: 100px 50px 50px 50px;
     }
 
-    .hoa-card {
+    .hoa-member {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 12px;
       padding: 20px;
       text-align: center;
-      transition: transform 0.3s, background 0.3s;
       cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
     }
-
-    .hoa-card:hover {
-      transform: translateY(-5px);
+    .hoa-member:hover {
+      transform: scale(1.05);
       background: rgba(255, 255, 255, 0.1);
     }
-
-    .hoa-card img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+    .hoa-member img {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      margin-bottom: 15px;
+      object-fit: cover;
+      margin-bottom: 10px;
     }
-
-    .hoa-card h3 {
-      margin: 10px 0;
+    .hoa-member h3 {
+      margin: 5px 0;
       font-size: 20px;
     }
-
-    .hoa-card p {
+    .hoa-member p {
       font-size: 14px;
-      color: #aaa;
+      color: #ccc;
     }
   </style>
 </head>
@@ -97,26 +97,53 @@
   </nav>
 
   <canvas id="canvas"></canvas>
-
-  <div class="hoa-container">
-    <div class="hoa-card" onclick="window.location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/100" alt="Person 1">
-      <h3>Person 1</h3>
-      <p>Short description about person 1.</p>
+  
+  <div class="hoa-grid">
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 1">
+      <h3>Member 1</h3>
+      <p>Short description about member 1.</p>
     </div>
-
-    <div class="hoa-card" onclick="window.location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/100" alt="Person 2">
-      <h3>Person 2</h3>
-      <p>Short description about person 2.</p>
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 2">
+      <h3>Member 2</h3>
+      <p>Short description about member 2.</p>
     </div>
-
-    <div class="hoa-card" onclick="window.location.href='hoa-pastes'">
-      <img src="https://via.placeholder.com/100" alt="Person 3">
-      <h3>Person 3</h3>
-      <p>Short description about person 3.</p>
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 3">
+      <h3>Member 3</h3>
+      <p>Short description about member 3.</p>
     </div>
-
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 4">
+      <h3>Member 4</h3>
+      <p>Short description about member 4.</p>
+    </div>
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 5">
+      <h3>Member 5</h3>
+      <p>Short description about member 5.</p>
+    </div>
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 6">
+      <h3>Member 6</h3>
+      <p>Short description about member 6.</p>
+    </div>
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 7">
+      <h3>Member 7</h3>
+      <p>Short description about member 7.</p>
+    </div>
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 8">
+      <h3>Member 8</h3>
+      <p>Short description about member 8.</p>
+    </div>
+    <div class="hoa-member" onclick="location.href='hoa-pastes'">
+      <img src="https://via.placeholder.com/80" alt="Member 9">
+      <h3>Member 9</h3>
+      <p>Short description about member 9.</p>
+    </div>
   </div>
 
   <script>
@@ -182,6 +209,7 @@
           let distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < 150) {
             ctx.strokeStyle = `rgba(255,255,255,${1 - distance / 150})`;
+            ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particles[a].x, particles[a].y);
             ctx.lineTo(mouse.x, mouse.y);
