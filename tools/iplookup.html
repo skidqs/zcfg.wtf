@@ -70,12 +70,18 @@
     padding: 20px;
     border-radius: 10px;
     border: 1px solid white;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    justify-content: space-between;
     position: relative;
   }
+
+  .output-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 10px;
+  }
+
   .output-row {
     display: flex;
     justify-content: space-between;
@@ -86,14 +92,16 @@
   .output-value { text-align: right; word-break: break-word; }
 
   .copy-btn {
-    margin-top: auto
-    padding: 10px;
+    flex-shrink: 0;
+    width: 100%;
+    padding: 14px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     background: grey;
     color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: bold;
     text-align: center;
   }
   .copy-btn:hover { background: #aaa; }
@@ -130,8 +138,10 @@
 
   <div class="tools-container">
     <div class="output-box" id="outputBox">
+      <div class="output-content" id="outputContent">
 
-      <button class="copy-btn" onclick="copyOutput()">Copy Info</button>
+      </div>
+      <button class="copy-btn" onclick="copyOutput()">Copy</button>
     </div>
 
     <iframe
@@ -239,8 +249,8 @@
     const ip = document.getElementById('ipInput').value.trim();
     if (!ip) return;
 
-    const outputBox = document.getElementById('outputBox');
-    outputBox.innerHTML = "";
+    const outputContent = document.getElementById('outputContent');
+    outputContent.innerHTML = "";
 
     try {
       const ipinfoToken = '68ff73597277ed';
@@ -270,14 +280,8 @@
         const div = document.createElement('div');
         div.className = "output-row";
         div.innerHTML = `<span class="output-label">${r.label}</span><span class="output-value">${r.value}</span>`;
-        outputBox.appendChild(div);
+        outputContent.appendChild(div);
       });
-
-      const copyBtn = document.createElement("button");
-      copyBtn.className = "copy-btn";
-      copyBtn.textContent = "Copy Info";
-      copyBtn.onclick = copyOutput;
-      outputBox.appendChild(copyBtn);
 
       if (ipinfoData.loc) {
         const [lat, lon] = ipinfoData.loc.split(',');
@@ -287,7 +291,7 @@
 
     } catch (err) {
       console.error(err);
-      outputBox.innerHTML = `<div style="color:red;">Failed to fetch data.</div>`;
+      outputContent.innerHTML = `<div style="color:red;">Failed to fetch data.</div>`;
     }
   }
 
