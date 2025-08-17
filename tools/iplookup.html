@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zero Config - Tools</title>
   <link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
     body {
       margin: 0;
@@ -33,7 +34,6 @@
       color: white;
       text-decoration: none;
       font-size: 18px;
-      transition: all 0.3s ease;
     }
     nav a:hover {
       color: white;
@@ -48,22 +48,20 @@
     .tools-container {
       position: relative;
       z-index: 10;
-      height: 100vh;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      flex-direction: row;
+      gap: 20px;
       padding-top: 150px;
-      gap: 30px;
       width: 100%;
+      justify-content: center;
+      align-items: flex-start;
     }
     .input-group {
       display: flex;
       gap: 10px;
-      width: 400px;
+      margin-bottom: 20px;
     }
     .input-group input {
-      flex: 1;
       padding: 10px;
       font-size: 16px;
       border: none;
@@ -78,7 +76,6 @@
       background: grey;
       color: white;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
     .input-group button:hover {
       background: #aaa;
@@ -87,17 +84,12 @@
       background: rgba(255,255,255,0.05);
       padding: 20px;
       border-radius: 10px;
-      width: 600px;
-      max-width: 90%;
+      width: 400px;
+      max-height: 600px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 10px;
-    }
-    .output-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-align: center;
     }
     .output-row {
       display: flex;
@@ -112,6 +104,17 @@
     .output-value {
       text-align: right;
       word-break: break-word;
+    }
+    #map {
+      width: 600px;
+      height: 600px;
+      border-radius: 10px;
+      border: 1px solid white;
+    }
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
   </style>
 </head>
@@ -128,16 +131,18 @@
 <canvas id="canvas"></canvas>
 
 <div class="tools-container">
-  <div class="input-group">
-    <input type="text" id="ipInput" placeholder="Enter IP Address">
-    <button onclick="lookupIP()">Lookup</button>
+  <div class="left-column">
+    <div class="input-group">
+      <input type="text" id="ipInput" placeholder="Enter IP Address">
+      <button onclick="lookupIP()">Lookup</button>
+    </div>
+    <div class="output-box" id="outputBox">
+    </div>
   </div>
-
-  <div class="output-box" id="outputBox">
-    <div class="output-title">Info</div>
-  </div>
+  <div id="map"></div>
 </div>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
@@ -233,12 +238,18 @@
   initParticles();
   animate();
 
+  const map = L.map('map').setView([0,0], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+  let marker;
+
   async function lookupIP() {
     const ip = document.getElementById('ipInput').value.trim();
     if (!ip) return;
 
     const outputBox = document.getElementById('outputBox');
-    outputBox.innerHTML = `<div class="output-title">Info</div>`;
+    outputBox.innerHTML = "";
 
     try {
       const ipinfoToken = '68ff73597277ed';
@@ -271,6 +282,13 @@
         rowDiv.innerHTML = `<div class="output-label">${r.label}</div><div class="output-value">${r.value}</div>`;
         outputBox.appendChild(rowDiv);
       });
+
+      if (ipinfoData.loc) {
+        const [lat, lon] = ipinfoData.loc.split(",");
+        map.setView([lat, lon], 6);
+        if (marker) marker.setLatLng([lat, lon]);
+        else marker = L.marker([lat, lon]).addTo(map);
+      }
 
     } catch(err) {
       outputBox.innerHTML += `<div style="text-align:center;color:red;">Error fetching info. Check IP and try again.</div>`;
