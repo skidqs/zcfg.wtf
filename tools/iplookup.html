@@ -60,19 +60,25 @@
       text-align: center;
     }
 
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin: 5px;
-      border-radius: 5px;
-      border: none;
+    .input-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
     }
 
     input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
       width: 250px;
     }
 
     button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
       background-color: grey;
       color: white;
       cursor: pointer;
@@ -84,7 +90,6 @@
     }
 
     .results {
-      margin-top: 30px;
       width: 90%;
       max-width: 800px;
       text-align: left;
@@ -117,9 +122,10 @@
   <canvas id="canvas"></canvas>
 
   <div class="container">
-    <p>Select a tool below to get started</p>
-    <input type="text" id="ipInput" placeholder="Enter IP or Domain">
-    <button onclick="lookupIP()">Lookup IP</button>
+    <div class="input-container">
+      <input type="text" id="ipInput" placeholder="Enter IP or Domain">
+      <button onclick="lookupIP()">Lookup</button>
+    </div>
     <div id="results" class="results"></div>
   </div>
 
@@ -229,27 +235,21 @@
       resultsDiv.innerHTML = 'Loading...';
 
       try {
-        const response = await fetch(`http://ip-api.com/json/${ip}`);
+        const response = await fetch(`https://ipinfo.io/${ip}/json?token=68ff73597277ed`);
         const data = await response.json();
-
-        if (data.status !== "success") {
-          resultsDiv.innerHTML = 'Invalid IP address or information not available.';
-          return;
-        }
 
         resultsDiv.innerHTML = `
           <h3>IP Address Information</h3>
-          <p><strong>IP Address:</strong> ${data.query}</p>
-          <p><strong>Hostname:</strong> ${data.reverse || 'N/A'}</p>
+          <p><strong>IP Address:</strong> ${data.ip || 'N/A'}</p>
+          <p><strong>Hostname:</strong> ${data.hostname || 'N/A'}</p>
 
           <h3>IP Address Location</h3>
-          <p><strong>Country:</strong> ${data.country}</p>
-          <p><strong>State/Region:</strong> ${data.regionName}</p>
-          <p><strong>City:</strong> ${data.city}</p>
-          <p><strong>ISP:</strong> ${data.isp}</p>
-          <p><strong>Network:</strong> ${data.as}</p>
-          <p><strong>Timezone:</strong> ${data.timezone}</p>
-          <p><strong>Coordinates:</strong> ${data.lat}, ${data.lon}</p>
+          <p><strong>City:</strong> ${data.city || 'N/A'}</p>
+          <p><strong>Region:</strong> ${data.region || 'N/A'}</p>
+          <p><strong>Country:</strong> ${data.country || 'N/A'}</p>
+          <p><strong>Location Coordinates:</strong> ${data.loc || 'N/A'}</p>
+          <p><strong>Organization:</strong> ${data.org || 'N/A'}</p>
+          <p><strong>Timezone:</strong> ${data.timezone || 'N/A'}</p>
         `;
       } catch (err) {
         resultsDiv.innerHTML = 'Error fetching IP information.';
@@ -257,6 +257,5 @@
       }
     }
   </script>
-
 </body>
 </html>
