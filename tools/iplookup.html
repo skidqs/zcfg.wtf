@@ -6,7 +6,6 @@
 <title>Zero Config - Tools</title>
 <link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet" />
 <style>
-
   *, *::before, *::after { box-sizing: border-box; }
 
   body {
@@ -61,13 +60,12 @@
     align-items: flex-start;
     gap: 20px;
     width: 100%;
-
     flex-wrap: nowrap;
   }
 
   .output-box {
     width: 600px;
-    height: 570px; 
+    height: 570px;
     background: rgba(255,255,255,0.05);
     padding: 20px;
     border-radius: 10px;
@@ -76,6 +74,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: relative;
   }
   .output-row {
     display: flex;
@@ -85,6 +84,19 @@
   }
   .output-label { font-weight: bold; color: #ccc; }
   .output-value { text-align: right; word-break: break-word; }
+
+  .copy-btn {
+    margin-top: auto
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: grey;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+  }
+  .copy-btn:hover { background: #aaa; }
 
   #map {
     width: 600px;
@@ -117,7 +129,10 @@
   </div>
 
   <div class="tools-container">
-    <div class="output-box" id="outputBox"></div>
+    <div class="output-box" id="outputBox">
+
+      <button class="copy-btn" onclick="copyOutput()">Copy Info</button>
+    </div>
 
     <iframe
       id="map"
@@ -258,6 +273,12 @@
         outputBox.appendChild(div);
       });
 
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "copy-btn";
+      copyBtn.textContent = "Copy Info";
+      copyBtn.onclick = copyOutput;
+      outputBox.appendChild(copyBtn);
+
       if (ipinfoData.loc) {
         const [lat, lon] = ipinfoData.loc.split(',');
         const map = document.getElementById('map');
@@ -268,6 +289,19 @@
       console.error(err);
       outputBox.innerHTML = `<div style="color:red;">Failed to fetch data.</div>`;
     }
+  }
+
+  function copyOutput() {
+    const rows = document.querySelectorAll('.output-row');
+    let text = "";
+    rows.forEach(row => {
+      const label = row.querySelector('.output-label').textContent;
+      const value = row.querySelector('.output-value').textContent;
+      text += `${label}: ${value}\n`;
+    });
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Copied to clipboard!");
+    });
   }
 </script>
 </body>
