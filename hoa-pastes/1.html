@@ -5,27 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oliver Jensenr</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      height: 100%;
+      width: 100%;
       background: black;
       color: white;
       font-family: monospace;
-      text-align: left;
-      overflow: auto;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: scale(0.7);
+      transform-origin: top center;
     }
     pre {
-      line-height: 1.5;
+      text-align: left;
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
-  <pre>
+  <div class="container">
+    <pre>
 @ Personal
 ├── Name                 : Oliver Jensenr
 ├── Age                  : 30
@@ -92,6 +100,7 @@
     ├── Username         : rkara1911
     ├── Display Name     : rkara1911
     └── Link To Profile  : https://www.snapchat.com/add/rkara1911?sender_web_id=4a72b417-ebd3-4ad7-9c00-51ff632bfe8e&device_type=desktop&is_copy_url=true
-  </pre>
+    </pre>
+  </div>
 </body>
 </html>
