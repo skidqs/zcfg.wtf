@@ -1,278 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zero Config - Tools</title>
-<link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: black;
-    color: white;
-    font-family: 'Tomorrow', sans-serif;
-    height: 100vh;
-    width: 100vw;
-    overflow-x: hidden;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero Config - Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: white;
+      font-family: 'Tomorrow', sans-serif;
+      height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
 
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 15px 0;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    z-index: 20;
-    backdrop-filter: blur(6px);
-  }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 15px 0;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      z-index: 20;
+      backdrop-filter: blur(6px);
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+    nav a:hover {
+      color: white;
+      text-shadow: none;
+    }
 
-  nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    transition: all 0.3s ease;
-  }
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
 
-  nav a:hover {
-    color: white;
-    text-shadow: none;
-  }
+    .container {
+      position: relative;
+      z-index: 10;
+      padding-top: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
 
-  #canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
+    .lookup-box {
+      display: flex;
+      gap: 10px;
+    }
 
-  .tools-container {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 150px;
-    width: 100%;
-  }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      width: 300px;
+    }
 
-  .lookup-box {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-  }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: grey;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #aaa;
+    }
 
-  input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    width: 300px;
-    border: none;
-    border-radius: 4px;
-  }
+    .output-box {
+      width: 80%;
+      max-width: 700px;
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background: grey;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  button:hover {
-    background: #aaa;
-  }
-
-  .output-box {
-    width: 80%;
-    max-width: 900px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .output-row {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    padding: 5px 0;
-  }
-
-  .output-label {
-    font-weight: bold;
-    flex: 1;
-  }
-
-  .output-value {
-    flex: 2;
-    text-align: right;
-    word-break: break-word;
-  }
-</style>
+    .output-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid white;
+      padding: 5px 0;
+    }
+    .output-row:last-child {
+      border-bottom: none;
+    }
+    .output-label {
+      font-weight: bold;
+    }
+    .output-value {
+      text-align: right;
+      max-width: 60%;
+      word-wrap: break-word;
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <a href="/index">Home</a>
-  <a href="/pastes">Pastes</a>
-  <a href="/tools">Tools</a>
-  <a href="/team">Team</a>
-  <a href="/hoa">HOA</a>
-</nav>
+  <nav>
+    <a href="index">Home</a>
+    <a href="pastes">Pastes</a>
+    <a href="tools">Tools</a>
+    <a href="team">Team</a>
+    <a href="hoa">HOA</a>
+  </nav>
 
-<canvas id="canvas"></canvas>
+  <canvas id="canvas"></canvas>
 
-<div class="tools-container">
-  <div class="lookup-box">
-    <input type="text" id="ipInput" placeholder="Enter IP or domain">
-    <button onclick="lookupIP()">Lookup</button>
+  <div class="container">
+    <div class="lookup-box">
+      <input type="text" id="ipInput" placeholder="Enter IP Address">
+      <button onclick="lookupIP()">Lookup</button>
+    </div>
+
+    <div class="output-box" id="outputBox">
+
+    </div>
   </div>
 
-  <div class="output-box" id="outputBox">
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+    let interactive = true;
 
-  </div>
-</div>
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-<script>
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-let mouse = { x: null, y: null };
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  init();
-});
-
-window.addEventListener('mousemove', (e) => {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
-});
-
-class Particle {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.vx = (Math.random() - 0.5) * 1.2;
-    this.vy = (Math.random() - 0.5) * 1.2;
-    this.size = 2;
-  }
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-  }
-}
-
-function connectParticles() {
-  for (let a = 0; a < particles.length; a++) {
-    for (let b = a + 1; b < particles.length; b++) {
-      let dx = particles[a].x - particles[b].x;
-      let dy = particles[a].y - particles[b].y;
-      let distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < 150) {
-        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(particles[a].x, particles[a].y);
-        ctx.lineTo(particles[b].x, particles[b].y);
-        ctx.stroke();
-      }
-    }
-    if (mouse.x && mouse.y) {
-      let dx = particles[a].x - mouse.x;
-      let dy = particles[a].y - mouse.y;
-      let distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < 150) {
-        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(particles[a].x, particles[a].y);
-        ctx.lineTo(mouse.x, mouse.y);
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-function init() {
-  particles = [];
-  for (let i = 0; i < 150; i++) {
-    let x = Math.random() * canvas.width;
-    let y = Math.random() * canvas.height;
-    particles.push(new Particle(x, y));
-  }
-}
-
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => { p.update(); p.draw(); });
-  connectParticles();
-  requestAnimationFrame(animate);
-}
-
-init();
-animate();
-
-async function lookupIP() {
-  const ip = document.getElementById('ipInput').value;
-  const output = document.getElementById('outputBox');
-
-  if (!ip) {
-    output.innerHTML = 'Please enter a valid IP or domain.';
-    return;
-  }
-
-  output.innerHTML = 'Loading...';
-
-  try {
-    const response = await fetch(`https://ipinfo.io/${ip}/json?token=68ff73597277ed`);
-    const data = await response.json();
-
-    const rows = [
-      {label: 'IP Address', value: data.ip || 'N/A'},
-      {label: 'Hostname', value: data.hostname || 'N/A'},
-      {label: 'Country', value: data.country || 'N/A'},
-      {label: 'Region', value: data.region || 'N/A'},
-      {label: 'City', value: data.city || 'N/A'},
-      {label: 'Organization', value: data.org || 'N/A'},
-      {label: 'Location', value: data.loc || 'N/A'},
-      {label: 'Timezone', value: data.timezone || 'N/A'}
-    ];
-
-    output.innerHTML = '';
-    rows.forEach(r => {
-      const row = document.createElement('div');
-      row.className = 'output-row';
-      row.innerHTML = `<div class="output-label">${r.label}</div><div class="output-value">${r.value}</div>`;
-      output.appendChild(row);
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
     });
 
-  } catch(err) {
-    output.innerHTML = 'Error fetching data. Make sure the IP/domain is valid.';
-  }
-}
-</script>
+    window.addEventListener('mousemove', (e) => {
+      if (interactive) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      }
+    });
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 1.2;
+        this.vy = (Math.random() - 0.5) * 1.2;
+        this.size = 2;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+      }
+    }
+
+    function connectParticles() {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 150) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+        if (mouse.x && mouse.y) {
+          let dx = particles[a].x - mouse.x;
+          let dy = particles[a].y - mouse.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 150) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function init() {
+      particles = [];
+      for (let i = 0; i < 150; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        particles.push(new Particle(x, y));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    async function lookupIP() {
+      const ip = document.getElementById('ipInput').value;
+      const outputBox = document.getElementById('outputBox');
+      if (!ip) return;
+      outputBox.innerHTML = 'Loading...';
+      try {
+        const response = await fetch(`https://ipinfo.io/${ip}/json?token=68ff73597277ed`);
+        const data = await response.json();
+        outputBox.innerHTML = `
+          <div class="output-row"><div class="output-label">IP Address</div><div class="output-value">${data.ip || '-'}</div></div>
+          <div class="output-row"><div class="output-label">Hostname</div><div class="output-value">${data.hostname || '-'}</div></div>
+          <div class="output-row"><div class="output-label">City</div><div class="output-value">${data.city || '-'}</div></div>
+          <div class="output-row"><div class="output-label">Region</div><div class="output-value">${data.region || '-'}</div></div>
+          <div class="output-row"><div class="output-label">Country</div><div class="output-value">${data.country || '-'}</div></div>
+          <div class="output-row"><div class="output-label">ISP / Org</div><div class="output-value">${data.org || '-'}</div></div>
+          <div class="output-row"><div class="output-label">Timezone</div><div class="output-value">${data.timezone || '-'}</div></div>
+          <div class="output-row"><div class="output-label">Coordinates</div><div class="output-value">${data.loc || '-'}</div></div>
+        `;
+      } catch (err) {
+        outputBox.innerHTML = 'Failed to fetch data. Make sure the IP is correct.';
+      }
+    }
+  </script>
 
 </body>
 </html>
