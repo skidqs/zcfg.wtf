@@ -60,47 +60,47 @@
     .team-grid.top {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 25px;
+      gap: 20px;
       justify-items: center;
-      margin-bottom: 80px;
+      margin-bottom: 70px;
     }
 
     .team-grid.bottom {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px 25px;
+      gap: 15px 20px;
       justify-items: center;
     }
 
     .team-card {
       background: #111;
       border: 1px solid #333;
-      border-radius: 10px;
-      padding: 15px;
+      border-radius: 8px;
+      padding: 10px;
       text-align: center;
-      width: 160px;
+      width: 120px;
       box-shadow: 0 0 6px rgba(0,0,0,0.6);
       font-family: 'Tomorrow', monospace;
     }
 
     .team-card img.profile {
-      width: 70px;
-      height: 70px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #444;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .name {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: bold;
-      margin: 0 0 6px 0;
+      margin: 0 0 4px 0;
     }
 
     .role {
-      margin: 0 0 15px 0;
-      font-size: 11px;
+      margin: 0 0 10px 0;
+      font-size: 10px;
       color: #bbb;
       font-family: monospace;
     }
@@ -108,12 +108,12 @@
     .socials {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 12px;
     }
 
     .socials a img {
-      width: 28px;
-      height: 28px;
+      width: 22px;
+      height: 22px;
       filter: brightness(0) invert(1);
       transition: transform 0.2s;
     }
@@ -155,6 +155,60 @@
       <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
     </div>
   </div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray;
+
+    class Particle {
+      constructor(x, y, size, speedX, speedY) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.speedX = speedX;
+        this.speedY = speedY;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.02;
+      }
+      draw() {
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      particlesArray = [];
+      for (let i = 0; i < 100; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 3 + 1;
+        const speedX = Math.random() * 1 - 0.5;
+        const speedY = Math.random() * 1 - 0.5;
+        particlesArray.push(new Particle(x, y, size, speedX, speedY));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+  </script>
 
 </body>
 </html>
