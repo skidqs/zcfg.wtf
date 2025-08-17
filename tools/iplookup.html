@@ -90,7 +90,7 @@
     padding: 20px;
     border-radius: 10px;
     width: 600px;
-    height: 580px;
+    height: 570px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -112,7 +112,7 @@
   }
   #map {
     width: 600px;
-    height: 580px;
+    height: 570px;
     border-radius: 10px;
     border: 1px solid white;
   }
@@ -147,7 +147,6 @@
 </div>
 
 <script>
-
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -270,7 +269,7 @@
         {label:"ASN", value: ipwhoisData.asn || "N/A"},
         {label:"Timezone", value: ipinfoData.timezone || ipwhoisData.timezone || "N/A"},
         {label:"Local Time", value: localTime},
-        {label:"Coordinates", value: ipinfoData.loc || ipwhoisData.latitude+","+ipwhoisData.longitude || "N/A"}
+        {label:"Coordinates", value: ipinfoData.loc || "N/A"}
       ];
 
       rows.forEach(r => {
@@ -285,12 +284,12 @@
         const map = document.getElementById('map');
         map.src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.5}%2C${lat-0.5}%2C${Number(lon)+0.5}%2C${Number(lat)+0.5}&layer=mapnik&marker=${lat}%2C${lon}`;
       }
-    } catch (err) {
+
+    } catch(err) {
       console.error(err);
       outputBox.innerHTML = `<div style="color:red;">Failed to fetch data.</div>`;
     }
   }
 </script>
-
 </body>
 </html>
