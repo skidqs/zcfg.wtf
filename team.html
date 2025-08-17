@@ -50,9 +50,10 @@
     .team-wrapper {
       position: relative;
       z-index: 10;
-      margin-top: 100px;
+      margin-top: 120px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
       padding: 20px;
     }
 
@@ -60,14 +61,21 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 40px;
-      max-width: 1100px;
+      justify-items: center;
+      margin-bottom: 60px;
+    }
+
+    .team-grid.bottom {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      justify-items: center;
     }
 
     .team-card {
       background: #111;
       border: 1px solid #333;
       border-radius: 12px;
-      padding: 15px;
+      padding: 20px;
       text-align: center;
       width: 200px;
       box-shadow: 0 0 8px rgba(0,0,0,0.6);
@@ -80,13 +88,13 @@
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #444;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .name {
       font-size: 16px;
       font-weight: bold;
-      margin: 0 0 12px 0;
+      margin: 0 0 10px 0;
     }
 
     .role {
@@ -99,22 +107,17 @@
     .socials {
       display: flex;
       justify-content: center;
-      gap: 28px;
+      gap: 30px;
     }
 
-    .socials a {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
-
-    .socials img {
-      width: 32px;
-      height: 32px;
+    .socials a img {
+      width: 34px;
+      height: 34px;
+      filter: brightness(0) invert(1);
       transition: transform 0.2s;
     }
 
-    .socials img:hover {
+    .socials a img:hover {
       transform: scale(1.2);
     }
   </style>
@@ -133,11 +136,13 @@
 
   <div class="team-wrapper">
     <div class="team-grid">
+      <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
+      <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
+      <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
+      <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
+    </div>
 
-      <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png" alt="Telegram"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png" alt="Doxbin"></a>
-      <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
-      <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
-      <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
+    <div class="team-grid bottom">
       <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
       <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
       <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
