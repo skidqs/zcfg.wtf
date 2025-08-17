@@ -80,17 +80,19 @@
   }
   .tools-container {
     display: flex;
-    gap: 20px;
     justify-content: center;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 20px;
     width: 100%;
+    flex-wrap: wrap;
   }
   .output-box {
+    flex: 1;
+    max-width: 600px;
+    min-height: 570px;
     background: rgba(255,255,255,0.05);
     padding: 20px;
     border-radius: 10px;
-    width: 600px;
-    height: 570px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -111,7 +113,8 @@
     word-break: break-word;
   }
   #map {
-    width: 600px;
+    flex: 1;
+    max-width: 600px;
     height: 570px;
     border-radius: 10px;
     border: 1px solid white;
@@ -140,7 +143,6 @@
     <iframe 
         id="map"
         src="https://www.openstreetmap.org/export/embed.html?bbox=-180%2C-90%2C180%2C90&amp;layer=mapnik" 
-        style="border:1px solid white;" 
         allowfullscreen>
     </iframe>
   </div>
