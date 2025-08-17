@@ -90,7 +90,7 @@
     padding: 20px;
     border-radius: 10px;
     width: 600px;
-    height: 600px;
+    height: 580px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -112,7 +112,7 @@
   }
   #map {
     width: 600px;
-    height: 600px;
+    height: 580px;
     border-radius: 10px;
     border: 1px solid white;
   }
@@ -137,11 +137,15 @@
   </div>
   <div class="tools-container">
     <div class="output-box" id="outputBox"></div>
-    <div id="map"></div>
+    <iframe 
+        id="map"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-180%2C-90%2C180%2C90&amp;layer=mapnik" 
+        style="border:1px solid white;" 
+        allowfullscreen>
+    </iframe>
   </div>
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
 <script>
 
   const canvas = document.getElementById('canvas');
@@ -238,15 +242,6 @@
   initParticles();
   animate();
 
-  let map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: 20, lng: 0 },
-    zoom: 2
-  });
-  let marker = new google.maps.Marker({
-    position: { lat: 20, lng: 0 },
-    map: map
-  });
-
   async function lookupIP() {
     const ip = document.getElementById('ipInput').value.trim();
     if (!ip) return;
@@ -280,13 +275,19 @@
 
       rows.forEach(r => {
         const div = document.createElement('div');
-        div.className = 'output-row';
+        div.className = "output-row";
         div.innerHTML = `<span class="output-label">${r.label}</span><span class="output-value">${r.value}</span>`;
         outputBox.appendChild(div);
       });
-    } catch(e) {
-      outputBox.innerHTML = "Error fetching IP data.";
-      console.error(e);
+
+      if (ipinfoData.loc) {
+        const [lat, lon] = ipinfoData.loc.split(',');
+        const map = document.getElementById('map');
+        map.src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.5}%2C${lat-0.5}%2C${Number(lon)+0.5}%2C${Number(lat)+0.5}&layer=mapnik&marker=${lat}%2C${lon}`;
+      }
+    } catch (err) {
+      console.error(err);
+      outputBox.innerHTML = `<div style="color:red;">Failed to fetch data.</div>`;
     }
   }
 </script>
