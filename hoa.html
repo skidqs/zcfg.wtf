@@ -12,8 +12,6 @@
       background: black;
       color: white;
       font-family: 'Tomorrow', sans-serif;
-      height: 100vh;
-      width: 100vw;
       overflow-x: hidden;
     }
 
@@ -22,7 +20,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0,0,0,0.4);
       padding: 15px 0;
       display: flex;
       justify-content: center;
@@ -34,11 +32,11 @@
       color: white;
       text-decoration: none;
       font-size: 18px;
-      transition: all 0.3s ease;
+      transition: none;
     }
     nav a:hover {
       color: white;
-      text-shadow: 0 0 10px white;
+      text-shadow: none;
     }
 
     #canvas {
@@ -51,40 +49,53 @@
     .hoa-container {
       position: relative;
       z-index: 10;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-      padding: 150px 50px 50px 50px;
-      justify-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       align-items: center;
+      gap: 40px;
+      padding-top: 100px;
+      padding-bottom: 50px;
+      min-height: 100vh;
     }
 
-    .person {
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid white;
-      border-radius: 20px;
-      padding: 30px;
+    .hoa-person {
       width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      color: white;
-      text-decoration: none;
-      transition: all 0.3s ease;
+      padding: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
-    .person:hover {
-      background: rgba(255, 255, 255, 0.15);
+
+    .hoa-person:hover {
       transform: scale(1.05);
+      background: rgba(255,255,255,0.1);
     }
-    .person img {
-      width: 150px;
-      height: 150px;
+
+    .hoa-person img {
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       margin-bottom: 15px;
+      object-fit: cover;
+      border: 2px solid white;
     }
-    .person h3 {
-      margin: 10px 0 5px 0;
-      font-size: 24px;
+
+    .hoa-person h2 {
+      margin: 0;
+      font-size: 22px;
+      margin-bottom: 10px;
     }
-    .person p {
+
+    .hoa-person p {
+      margin: 0;
       font-size: 16px;
       color: #ccc;
     }
@@ -93,11 +104,11 @@
 <body>
 
   <nav>
-    <a href="index">Home</a>
-    <a href="pastes">Pastes</a>
-    <a href="tools">Tools</a>
-    <a href="team">Team</a>
-    <a href="hoa">Hall Of Autism</a>
+    <a href="index.html">Home</a>
+    <a href="pastes.html">Pastes</a>
+    <a href="tools.html">Tools</a>
+    <a href="team.html">Team</a>
+    <a href="hoa.html">Hall Of Autism</a>
   </nav>
 
   <canvas id="canvas"></canvas>
@@ -108,45 +119,45 @@
       <h3>Oliver Jensenr</h3>
       <p>this paste is on a pedophile called Oliver Jensenr a 30 year old male who shows his penis to kids and jerks off on calls, he is also gay and doesn't matter what age you are to him</p>
     </a>
-    <a href="hoa-pastes/2" class="person">
-      <img src="https://via.placeholder.com/150" alt="Person 2">
-      <h3>Person 2</h3>
-      <p>Description for Person 2</p>
+    <a href="hoa-pastes/2.html" class="hoa-person">
+      <img src="https://via.placeholder.com/120" alt="Person 2">
+      <h2>Person 2</h2>
+      <p>Description 2</p>
     </a>
-    <a href="hoa-pastes/3" class="person">
-      <img src="https://via.placeholder.com/150" alt="Person 3">
-      <h3>Person 3</h3>
-      <p>Description for Person 3</p>
+    <a href="hoa-pastes/3.html" class="hoa-person">
+      <img src="https://via.placeholder.com/120" alt="Person 3">
+      <h2>Person 3</h2>
+      <p>Description 3</p>
     </a>
-    <a href="hoa-pastes/4" class="person">
-      <img src="https://via.placeholder.com/150" alt="Person 4">
-      <h3>Person 4</h3>
-      <p>Description for Person 4</p>
+    <a href="hoa-pastes/4.html" class="hoa-person">
+      <img src="https://via.placeholder.com/120" alt="Person 4">
+      <h2>Person 4</h2>
+      <p>Description 4</p>
     </a>
-    <a href="hoa-pastes/5" class="person">
-      <img src="https://via.placeholder.com/150" alt="Person 5">
-      <h3>Person 5</h3>
-      <p>Description for Person 5</p>
+    <a href="hoa-pastes/5.html" class="hoa-person">
+      <img src="https://via.placeholder.com/120" alt="Person 5">
+      <h2>Person 5</h2>
+      <p>Description 5</p>
     </a>
-    <a href="hoa-pastes/6" class="person">
-      <img src="https://via.placeholder.com/150" alt="Person 6">
-      <h3>Person 6</h3>
-      <p>Description for Person 6</p>
+    <a href="hoa-pastes/6.html" class="hoa-person">
+      <img src="https://via.placeholder.com/120" alt="Person 6">
+      <h2>Person 6</h2>
+      <p>Description 6</p>
     </a>
-    <a href="hoa-pastes/7" class="person">
-      <img src="https://via.placeholder.com/150" alt="Person 7">
-      <h3>Person 7</h3>
-      <p>Description for Person 7</p>
+    <a href="hoa-pastes/7.html" class="hoa-person">
+      <img src="https://via.placeholder.com/120" alt="Person 7">
+      <h2>Person 7</h2>
+      <p>Description 7</p>
     </a>
-    <a href="hoa-pastes/8" class="person">
-      <img src="https://via.placeholder.com/150" alt="Person 8">
-      <h3>Person 8</h3>
-      <p>Description for Person 8</p>
+    <a href="hoa-pastes/8.html" class="hoa-person">
+      <img src="https://via.placeholder.com/120" alt="Person 8">
+      <h2>Person 8</h2>
+      <p>Description 8</p>
     </a>
-    <a href="hoa-pastes/9" class="person">
-      <img src="https://via.placeholder.com/150" alt="Person 9">
-      <h3>Person 9</h3>
-      <p>Description for Person 9</p>
+    <a href="hoa-pastes/9.html" class="hoa-person">
+      <img src="https://via.placeholder.com/120" alt="Person 9">
+      <h2>Person 9</h2>
+      <p>Description 9</p>
     </a>
   </div>
 
