@@ -38,7 +38,6 @@
     }
     nav a:hover {
       color: white;
-      text-shadow: none;
     }
 
     #canvas {
@@ -61,9 +60,9 @@
       background: #111;
       border: 1px solid #333;
       border-radius: 15px;
-      padding: 20px;
+      padding: 25px;
       text-align: center;
-      width: 250px;
+      width: 260px;
       box-shadow: 0 0 15px rgba(0,0,0,0.6);
     }
 
@@ -75,27 +74,28 @@
       border: 2px solid #444;
     }
 
-    .team-card h2 {
-      margin: 10px 0 5px 0;
+    .name {
+      margin: 12px 0 6px 0;
       font-size: 20px;
       font-weight: bold;
     }
 
-    .team-card p {
-      margin: 3px 0;
+    .role {
+      margin: 3px 0 12px 0;
       font-size: 14px;
       color: #bbb;
     }
 
-    .socials {
-      margin-top: 10px;
+    .socials-title {
+      font-size: 12px;
+      color: #999;
+      margin: 10px 0;
     }
 
     .socials img {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       margin: 0 8px;
-      filter: invert(1);
       transition: transform 0.2s;
     }
 
@@ -118,12 +118,15 @@
 
   <div class="team-wrapper">
     <div class="team-card">
-      <img class="profile" src="https://picsum.photos/200" alt="Profile Picture">
-      <h2>Empty/h2>
-      <p>Member @ Zero Config</p>
+      <img class="profile" src="https://files.catbox.moe/hgjqq6.jpg" alt="Profile Picture">
+
+      <div class="name">Empty</div>
+      <div class="role">Empty @ Zero Config</div>
+
+      <div class="socials-title">--Socials--</div>
       <div class="socials">
-        <a href="#"><img src="https://files.catbox.moe/ek68e2.png" alt="Telegram"></a>
-        <a href="#"><img src="https://files.catbox.moe/domhem.png" alt="Doxbin"></a>
+        <a href="#"><img src="https://files.catbox.moe/ek68e2.png" alt="Social 1"></a>
+        <a href="#"><img src="https://files.catbox.moe/domhem.png" alt="Social 2"></a>
       </div>
     </div>
   </div>
@@ -133,7 +136,6 @@
     const ctx = canvas.getContext('2d');
     let particles = [];
     let mouse = { x: null, y: null };
-    let interactive = true;
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -145,10 +147,8 @@
     });
 
     window.addEventListener('mousemove', (e) => {
-      if (interactive) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      }
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     });
 
     class Particle {
