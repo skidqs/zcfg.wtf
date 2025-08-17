@@ -57,49 +57,50 @@
       padding: 20px;
     }
 
-    .team-grid {
+    .team-grid.top {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
+      gap: 25px;
       justify-items: center;
-      margin-bottom: 60px;
+      margin-bottom: 80px;
     }
 
     .team-grid.bottom {
+      display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
+      gap: 20px 25px;
       justify-items: center;
     }
 
     .team-card {
       background: #111;
       border: 1px solid #333;
-      border-radius: 12px;
-      padding: 20px;
+      border-radius: 10px;
+      padding: 15px;
       text-align: center;
-      width: 200px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.6);
+      width: 160px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.6);
       font-family: 'Tomorrow', monospace;
     }
 
     .team-card img.profile {
-      width: 90px;
-      height: 90px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #444;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .name {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
-      margin: 0 0 10px 0;
+      margin: 0 0 6px 0;
     }
 
     .role {
-      margin: 0 0 20px 0;
-      font-size: 13px;
+      margin: 0 0 15px 0;
+      font-size: 11px;
       color: #bbb;
       font-family: monospace;
     }
@@ -107,18 +108,18 @@
     .socials {
       display: flex;
       justify-content: center;
-      gap: 30px;
+      gap: 20px;
     }
 
     .socials a img {
-      width: 34px;
-      height: 34px;
+      width: 28px;
+      height: 28px;
       filter: brightness(0) invert(1);
       transition: transform 0.2s;
     }
 
     .socials a img:hover {
-      transform: scale(1.2);
+      transform: scale(1.15);
     }
   </style>
 </head>
@@ -135,7 +136,7 @@
   <canvas id="canvas"></canvas>
 
   <div class="team-wrapper">
-    <div class="team-grid">
+    <div class="team-grid top">
       <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
       <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
       <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
@@ -154,99 +155,6 @@
       <div class="team-card"><img class="profile" src="https://files.catbox.moe/hgjqq6.jpg"><div class="name">Empty</div><div class="role">Empty @ Zero Config</div><div class="socials"><a href="#"><img src="https://files.catbox.moe/ek68e2.png"></a><a href="#"><img src="https://image2url.com/images/1755447638062-aa9f8532-d9ed-4694-8cc7-3d52fb8693b8.png"></a></div></div>
     </div>
   </div>
-
-  <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouse = { x: null, y: null };
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      init();
-    });
-
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-
-    class Particle {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.vx = (Math.random() - 0.5) * 1.2;
-        this.vy = (Math.random() - 0.5) * 1.2;
-        this.size = 2;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
-    }
-
-    function connectParticles() {
-      for (let a = 0; a < particles.length; a++) {
-        for (let b = a + 1; b < particles.length; b++) {
-          let dx = particles[a].x - particles[b].x;
-          let dy = particles[a].y - particles[b].y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(particles[b].x, particles[b].y);
-            ctx.stroke();
-          }
-        }
-        if (mouse.x && mouse.y) {
-          let dx = particles[a].x - mouse.x;
-          let dy = particles[a].y - mouse.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function init() {
-      particles = [];
-      for (let i = 0; i < 150; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        particles.push(new Particle(x, y));
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => { p.update(); p.draw(); });
-      connectParticles();
-      requestAnimationFrame(animate);
-    }
-
-    init();
-    animate();
-  </script>
 
 </body>
 </html>
