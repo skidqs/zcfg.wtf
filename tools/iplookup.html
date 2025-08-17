@@ -4,292 +4,156 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zero Config - Tools</title>
-<link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
-    padding: 0;
-    background: black;
+    font-family: Arial, sans-serif;
+    background: #000 url('https://cdn.jsdelivr.net/gh/jakesgordon/javascript-particles@master/demo/media/particle-backgrounds/particles.png') no-repeat center center fixed;
+    background-size: cover;
     color: white;
-    font-family: 'Tomorrow', sans-serif;
-    height: 100vh;
-    width: 100vw;
-    overflow-x: hidden;
   }
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0,0,0,0.4);
-    padding: 15px 0;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    z-index: 20;
-    backdrop-filter: blur(6px);
-  }
-  nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  nav a:hover {
-    color: white;
-    text-shadow: none;
-  }
-  #canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
-  .container {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 150px;
-    gap: 20px;
-  }
-  .input-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .input-group input {
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    width: 300px;
-  }
-  .input-group button {
+  .top-bar {
+    background: #111;
     padding: 10px 20px;
-    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .top-bar input {
+    padding: 8px;
+    width: 300px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
+  }
+  .top-bar button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
     background: grey;
     color: white;
     cursor: pointer;
   }
-  .input-group button:hover {
-    background: #aaa;
+  .top-bar button:hover {
+    background: grey;
   }
-  .tools-container {
+  .content {
     display: flex;
-    gap: 20px;
     justify-content: center;
-    align-items: flex-start;
-    width: 100%;
+    margin-top: 30px;
+    gap: 20px;
   }
   .output-box {
-    background: rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.7);
     padding: 20px;
-    border-radius: 10px;
-    width: 600px;
-    height: 570px;
-    overflow-y: auto;
+    border-radius: 8px;
+    width: 500px;
+    height: 500px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    justify-content: space-between;
+  }
+  .output-rows {
+    overflow-y: auto;
+    max-height: 440px;
   }
   .output-row {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid white;
-    padding: 5px 0;
-  }
-  .output-label {
-    font-weight: bold;
-    color: #ccc;
-  }
-  .output-value {
-    text-align: right;
-    word-break: break-word;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
   }
   #map {
-    width: 600px;
-    height: 570px;
-    border-radius: 10px;
-    border: 1px solid white;
+    width: 500px;
+    height: 500px;
+    border-radius: 8px;
+    border: 2px solid #555;
+  }
+  .copy-btn {
+    margin-top: 10px;
+    background: grey;
+    border: none;
+    color: white;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .copy-btn:hover {
+    background: grey;
   }
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="/index">Home</a>
-  <a href="/pastes">Pastes</a>
-  <a href="/tools">Tools</a>
-  <a href="/team">Team</a>
-  <a href="/hoa">HOA</a>
-</nav>
+<div class="top-bar">
+  <input type="text" id="ipInput" placeholder="Enter IP Address">
+  <button onclick="lookupIP()">Lookup</button>
+</div>
 
-<canvas id="canvas"></canvas>
-
-<div class="container">
-  <div class="input-group">
-    <input type="text" id="ipInput" placeholder="Enter IP Address">
-    <button onclick="lookupIP()">Lookup</button>
+<div class="content">
+  <div class="output-box">
+    <div class="output-rows" id="outputBox"></div>
+    <button class="copy-btn" onclick="copyOutput()">Copy Info</button>
   </div>
-  <div class="tools-container">
-    <div class="output-box" id="outputBox"></div>
-    <iframe 
-        id="map"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=-180%2C-90%2C180%2C90&amp;layer=mapnik" 
-        style="border:1px solid white;" 
-        allowfullscreen>
-    </iframe>
-  </div>
+  <iframe id="map" src="https://www.openstreetmap.org/export/embed.html?bbox=0,0,0,0&layer=mapnik"></iframe>
 </div>
 
 <script>
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  let mouse = { x: null, y: null };
-  let interactive = true;
+const token = "68ff73597277ed";
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+async function lookupIP() {
+  const ip = document.getElementById('ipInput').value.trim();
+  const outputBox = document.getElementById('outputBox');
+  outputBox.innerHTML = "";
+  if (!ip) return;
 
-  window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    initParticles();
+  try {
+    const res = await fetch(`https://ipinfo.io/${ip}?token=${token}`);
+    const ipinfoData = await res.json();
+
+    const localTime = ipinfoData.timezone ? new Date().toLocaleString("en-US", { timeZone: ipinfoData.timezone }) : "N/A";
+
+    const rows = [
+      {label:"IP Address", value: ipinfoData.ip || "N/A"},
+      {label:"Hostname", value: ipinfoData.hostname || "N/A"},
+      {label:"City", value: ipinfoData.city || "N/A"},
+      {label:"Region/State", value: ipinfoData.region || "N/A"},
+      {label:"Country", value: ipinfoData.country || "N/A"},
+      {label:"Postal", value: ipinfoData.postal || "N/A"},
+      {label:"ISP / Organization", value: ipinfoData.org || "N/A"},
+      {label:"ASN", value: ipinfoData.org ? ipinfoData.org.split(' ')[0] : "N/A"},
+      {label:"Timezone", value: ipinfoData.timezone || "N/A"},
+      {label:"Local Time", value: localTime},
+      {label:"Coordinates", value: ipinfoData.loc || "N/A"}
+    ];
+
+    rows.forEach(r => {
+      const div = document.createElement('div');
+      div.className = "output-row";
+      div.innerHTML = `<span>${r.label}</span><span>${r.value}</span>`;
+      outputBox.appendChild(div);
+    });
+
+    if (ipinfoData.loc) {
+      const [lat, lon] = ipinfoData.loc.split(',');
+      const map = document.getElementById('map');
+      map.src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.5}%2C${lat-0.5}%2C${Number(lon)+0.5}%2C${Number(lat)+0.5}&layer=mapnik&marker=${lat}%2C${lon}`;
+    }
+
+  } catch(err) {
+    console.error(err);
+    outputBox.innerHTML = `<div style="color:red;">Failed to fetch data.</div>`;
+  }
+}
+
+function copyOutput() {
+  const outputBox = document.getElementById('outputBox');
+  let text = "";
+  outputBox.querySelectorAll('.output-row').forEach(row => {
+    text += row.innerText + "\n";
   });
-
-  window.addEventListener('mousemove', (e) => {
-    if (interactive) {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    }
-  });
-
-  class Particle {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.vx = (Math.random() - 0.5) * 1.2;
-      this.vy = (Math.random() - 0.5) * 1.2;
-      this.size = 2;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = 'white';
-      ctx.fill();
-    }
-  }
-
-  function connectParticles() {
-    for (let a = 0; a < particles.length; a++) {
-      for (let b = a + 1; b < particles.length; b++) {
-        let dx = particles[a].x - particles[b].x;
-        let dy = particles[a].y - particles[b].y;
-        let distance = Math.sqrt(dx*dx + dy*dy);
-        if (distance < 150) {
-          ctx.strokeStyle = `rgba(255,255,255,${1-distance/150})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(particles[a].x, particles[a].y);
-          ctx.lineTo(particles[b].x, particles[b].y);
-          ctx.stroke();
-        }
-      }
-      if (mouse.x && mouse.y) {
-        let dx = particles[a].x - mouse.x;
-        let dy = particles[a].y - mouse.y;
-        let distance = Math.sqrt(dx*dx + dy*dy);
-        if (distance < 150) {
-          ctx.strokeStyle = `rgba(255,255,255,${1-distance/150})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(particles[a].x, particles[a].y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
-        }
-      }
-    }
-  }
-
-  function initParticles() {
-    particles = [];
-    for (let i = 0; i < 150; i++) {
-      let x = Math.random() * canvas.width;
-      let y = Math.random() * canvas.height;
-      particles.push(new Particle(x, y));
-    }
-  }
-
-  function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p => { p.update(); p.draw(); });
-    connectParticles();
-    requestAnimationFrame(animate);
-  }
-
-  initParticles();
-  animate();
-
-  async function lookupIP() {
-    const ip = document.getElementById('ipInput').value.trim();
-    if (!ip) return;
-
-    const outputBox = document.getElementById('outputBox');
-    outputBox.innerHTML = "";
-
-    try {
-      const ipinfoToken = '68ff73597277ed';
-      const ipinfoRes = await fetch(`https://ipinfo.io/${ip}?token=${ipinfoToken}`);
-      const ipinfoData = await ipinfoRes.json();
-
-      const ipwhoisRes = await fetch(`https://ipwhois.app/json/${ip}`);
-      const ipwhoisData = await ipwhoisRes.json();
-
-      const localTime = new Date().toLocaleString("en-US", {timeZone: ipinfoData.timezone || "UTC"});
-
-      const rows = [
-        {label:"IP Address", value: ipinfoData.ip || ip},
-        {label:"Hostname", value: ipinfoData.hostname || ipwhoisData.reverse || "N/A"},
-        {label:"City", value: ipinfoData.city || ipwhoisData.city || "N/A"},
-        {label:"Region/State", value: ipinfoData.region || ipwhoisData.region || "N/A"},
-        {label:"Country", value: ipinfoData.country || ipwhoisData.country || "N/A"},
-        {label:"Postal", value: ipinfoData.postal || "N/A"},
-        {label:"ISP / Organization", value: ipinfoData.org || ipwhoisData.org || "N/A"},
-        {label:"ASN", value: ipwhoisData.asn || "N/A"},
-        {label:"Timezone", value: ipinfoData.timezone || ipwhoisData.timezone || "N/A"},
-        {label:"Local Time", value: localTime},
-        {label:"Coordinates", value: ipinfoData.loc || "N/A"}
-      ];
-
-      rows.forEach(r => {
-        const div = document.createElement('div');
-        div.className = "output-row";
-        div.innerHTML = `<span class="output-label">${r.label}</span><span class="output-value">${r.value}</span>`;
-        outputBox.appendChild(div);
-      });
-
-      if (ipinfoData.loc) {
-        const [lat, lon] = ipinfoData.loc.split(',');
-        const map = document.getElementById('map');
-        map.src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.5}%2C${lat-0.5}%2C${Number(lon)+0.5}%2C${Number(lat)+0.5}&layer=mapnik&marker=${lat}%2C${lon}`;
-      }
-
-    } catch(err) {
-      console.error(err);
-      outputBox.innerHTML = `<div style="color:red;">Failed to fetch data.</div>`;
-    }
-  }
+  navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+}
 </script>
+
 </body>
 </html>
