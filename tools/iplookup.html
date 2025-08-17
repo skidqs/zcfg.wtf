@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zero Config - Tools</title>
-<link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet" />
 <style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+
   body {
     margin: 0;
     padding: 0;
@@ -18,8 +21,7 @@
   }
   nav {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 100%;
     background: rgba(0,0,0,0.4);
     padding: 15px 0;
@@ -29,21 +31,11 @@
     z-index: 20;
     backdrop-filter: blur(6px);
   }
-  nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  nav a:hover {
-    color: white;
-    text-shadow: none;
-  }
-  #canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
+  nav a { color: white; text-decoration: none; font-size: 18px; }
+  nav a:hover { color: white; text-shadow: none; }
+
+  #canvas { position: fixed; top: 0; left: 0; z-index: 0; }
+
   .container {
     position: relative;
     z-index: 10;
@@ -53,46 +45,33 @@
     padding-top: 150px;
     gap: 20px;
   }
-  .input-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
+
+  .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
   .input-group input {
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    width: 300px;
+    padding: 10px; font-size: 16px; border: none; border-radius: 5px; outline: none; width: 300px;
   }
   .input-group button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    background: grey;
-    color: white;
-    cursor: pointer;
+    padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; background: grey; color: white; cursor: pointer;
   }
-  .input-group button:hover {
-    background: #aaa;
-  }
+  .input-group button:hover { background: #aaa; }
+
   .tools-container {
     display: flex;
     justify-content: center;
-    align-items: stretch;
+    align-items: flex-start;
     gap: 20px;
     width: 100%;
-    flex-wrap: wrap;
+
+    flex-wrap: nowrap;
   }
+
   .output-box {
-    flex: 1;
-    max-width: 600px;
-    min-height: 570px;
+    width: 600px;
+    height: 570px; 
     background: rgba(255,255,255,0.05);
     padding: 20px;
     border-radius: 10px;
+    border: 1px solid white;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -104,20 +83,18 @@
     border-bottom: 1px solid white;
     padding: 5px 0;
   }
-  .output-label {
-    font-weight: bold;
-    color: #ccc;
-  }
-  .output-value {
-    text-align: right;
-    word-break: break-word;
-  }
+  .output-label { font-weight: bold; color: #ccc; }
+  .output-value { text-align: right; word-break: break-word; }
+
   #map {
-    flex: 1;
-    max-width: 600px;
+    width: 600px;
     height: 570px;
     border-radius: 10px;
     border: 1px solid white;
+  }
+
+  @media (max-width: 1240px) {
+    .tools-container { flex-wrap: wrap; }
   }
 </style>
 </head>
@@ -135,15 +112,17 @@
 
 <div class="container">
   <div class="input-group">
-    <input type="text" id="ipInput" placeholder="Enter IP Address">
+    <input type="text" id="ipInput" placeholder="Enter IP Address" />
     <button onclick="lookupIP()">Lookup</button>
   </div>
+
   <div class="tools-container">
     <div class="output-box" id="outputBox"></div>
-    <iframe 
-        id="map"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=-180%2C-90%2C180%2C90&amp;layer=mapnik" 
-        allowfullscreen>
+
+    <iframe
+      id="map"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=-180%2C-90%2C180%2C90&amp;layer=mapnik"
+      allowfullscreen>
     </iframe>
   </div>
 </div>
@@ -173,15 +152,13 @@
 
   class Particle {
     constructor(x, y) {
-      this.x = x;
-      this.y = y;
+      this.x = x; this.y = y;
       this.vx = (Math.random() - 0.5) * 1.2;
       this.vy = (Math.random() - 0.5) * 1.2;
       this.size = 2;
     }
     update() {
-      this.x += this.vx;
-      this.y += this.vy;
+      this.x += this.vx; this.y += this.vy;
       if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
       if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
     }
@@ -196,11 +173,11 @@
   function connectParticles() {
     for (let a = 0; a < particles.length; a++) {
       for (let b = a + 1; b < particles.length; b++) {
-        let dx = particles[a].x - particles[b].x;
-        let dy = particles[a].y - particles[b].y;
-        let distance = Math.sqrt(dx*dx + dy*dy);
+        const dx = particles[a].x - particles[b].x;
+        const dy = particles[a].y - particles[b].y;
+        const distance = Math.sqrt(dx*dx + dy*dy);
         if (distance < 150) {
-          ctx.strokeStyle = `rgba(255,255,255,${1-distance/150})`;
+          ctx.strokeStyle = `rgba(255,255,255,${1 - distance/150})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(particles[a].x, particles[a].y);
@@ -209,11 +186,11 @@
         }
       }
       if (mouse.x && mouse.y) {
-        let dx = particles[a].x - mouse.x;
-        let dy = particles[a].y - mouse.y;
-        let distance = Math.sqrt(dx*dx + dy*dy);
+        const dx = particles[a].x - mouse.x;
+        const dy = particles[a].y - mouse.y;
+        const distance = Math.sqrt(dx*dx + dy*dy);
         if (distance < 150) {
-          ctx.strokeStyle = `rgba(255,255,255,${1-distance/150})`;
+          ctx.strokeStyle = `rgba(255,255,255,${1 - distance/150})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(particles[a].x, particles[a].y);
@@ -227,14 +204,14 @@
   function initParticles() {
     particles = [];
     for (let i = 0; i < 150; i++) {
-      let x = Math.random() * canvas.width;
-      let y = Math.random() * canvas.height;
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
       particles.push(new Particle(x, y));
     }
   }
 
   function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => { p.update(); p.draw(); });
     connectParticles();
     requestAnimationFrame(animate);
@@ -258,7 +235,7 @@
       const ipwhoisRes = await fetch(`https://ipwhois.app/json/${ip}`);
       const ipwhoisData = await ipwhoisRes.json();
 
-      const localTime = new Date().toLocaleString("en-US", {timeZone: ipinfoData.timezone || "UTC"});
+      const localTime = new Date().toLocaleString("en-US", { timeZone: ipinfoData.timezone || "UTC" });
 
       const rows = [
         {label:"IP Address", value: ipinfoData.ip || ip},
@@ -287,7 +264,7 @@
         map.src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.5}%2C${lat-0.5}%2C${Number(lon)+0.5}%2C${Number(lat)+0.5}&layer=mapnik&marker=${lat}%2C${lon}`;
       }
 
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       outputBox.innerHTML = `<div style="color:red;">Failed to fetch data.</div>`;
     }
