@@ -1,122 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zero Config - Tools</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      color: white;
-      font-family: 'Tomorrow', sans-serif;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-    }
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 15px 0;
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      z-index: 20;
-      backdrop-filter: blur(6px);
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
-    }
-    nav a:hover {
-      color: white;
-      text-shadow: none;
-    }
-    #canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-    .tools-container {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-      padding-top: 150px;
-      width: 100%;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    .input-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .input-group input {
-      padding: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      outline: none;
-    }
-    .input-group button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      background: grey;
-      color: white;
-      cursor: pointer;
-    }
-    .input-group button:hover {
-      background: #aaa;
-    }
-    .output-box {
-      background: rgba(255,255,255,0.05);
-      padding: 20px;
-      border-radius: 10px;
-      width: 400px;
-      max-height: 600px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .output-row {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid white;
-      padding: 5px 0;
-    }
-    .output-label {
-      font-weight: bold;
-      color: #ccc;
-    }
-    .output-value {
-      text-align: right;
-      word-break: break-word;
-    }
-    #map {
-      width: 600px;
-      height: 600px;
-      border-radius: 10px;
-      border: 1px solid white;
-    }
-    .left-column {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Config - Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Tomorrow&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: white;
+    font-family: 'Tomorrow', sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+  }
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    z-index: 20;
+    backdrop-filter: blur(6px);
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  nav a:hover {
+    color: white;
+    text-shadow: none;
+  }
+  #canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+  .container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 150px;
+    gap: 20px;
+  }
+  .input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .input-group input {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    width: 300px;
+  }
+  .input-group button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background: grey;
+    color: white;
+    cursor: pointer;
+  }
+  .input-group button:hover {
+    background: #aaa;
+  }
+  .tools-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .output-box {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 10px;
+    width: 600px;
+    height: 600px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .output-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid white;
+    padding: 5px 0;
+  }
+  .output-label {
+    font-weight: bold;
+    color: #ccc;
+  }
+  .output-value {
+    text-align: right;
+    word-break: break-word;
+  }
+  #map {
+    width: 600px;
+    height: 600px;
+    border-radius: 10px;
+    border: 1px solid white;
+  }
+</style>
 </head>
 <body>
 
@@ -130,20 +130,20 @@
 
 <canvas id="canvas"></canvas>
 
-<div class="tools-container">
-  <div class="left-column">
-    <div class="input-group">
-      <input type="text" id="ipInput" placeholder="Enter IP Address">
-      <button onclick="lookupIP()">Lookup</button>
-    </div>
-    <div class="output-box" id="outputBox">
-    </div>
+<div class="container">
+  <div class="input-group">
+    <input type="text" id="ipInput" placeholder="Enter IP Address">
+    <button onclick="lookupIP()">Lookup</button>
   </div>
-  <div id="map"></div>
+  <div class="tools-container">
+    <div class="output-box" id="outputBox"></div>
+    <div id="map"></div>
+  </div>
 </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
 <script>
+
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -238,11 +238,14 @@
   initParticles();
   animate();
 
-  const map = L.map('map').setView([0,0], 2);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-  let marker;
+  let map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: 20, lng: 0 },
+    zoom: 2
+  });
+  let marker = new google.maps.Marker({
+    position: { lat: 20, lng: 0 },
+    map: map
+  });
 
   async function lookupIP() {
     const ip = document.getElementById('ipInput').value.trim();
@@ -272,27 +275,18 @@
         {label:"ASN", value: ipwhoisData.asn || "N/A"},
         {label:"Timezone", value: ipinfoData.timezone || ipwhoisData.timezone || "N/A"},
         {label:"Local Time", value: localTime},
-        {label:"Coordinates", value: ipinfoData.loc || ipwhoisData.latitude+","+ipwhoisData.longitude || "N/A"},
-        {label:"IP Type", value: ipwhoisData.type || "N/A"}
+        {label:"Coordinates", value: ipinfoData.loc || ipwhoisData.latitude+","+ipwhoisData.longitude || "N/A"}
       ];
 
       rows.forEach(r => {
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'output-row';
-        rowDiv.innerHTML = `<div class="output-label">${r.label}</div><div class="output-value">${r.value}</div>`;
-        outputBox.appendChild(rowDiv);
+        const div = document.createElement('div');
+        div.className = 'output-row';
+        div.innerHTML = `<span class="output-label">${r.label}</span><span class="output-value">${r.value}</span>`;
+        outputBox.appendChild(div);
       });
-
-      if (ipinfoData.loc) {
-        const [lat, lon] = ipinfoData.loc.split(",");
-        map.setView([lat, lon], 6);
-        if (marker) marker.setLatLng([lat, lon]);
-        else marker = L.marker([lat, lon]).addTo(map);
-      }
-
-    } catch(err) {
-      outputBox.innerHTML += `<div style="text-align:center;color:red;">Error fetching info. Check IP and try again.</div>`;
-      console.error(err);
+    } catch(e) {
+      outputBox.innerHTML = "Error fetching IP data.";
+      console.error(e);
     }
   }
 </script>
